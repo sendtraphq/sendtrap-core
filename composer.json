@@ -1,0 +1,55 @@
+{
+    "name": "sendtrap/core",
+    "description": "Sendtrap public core: SMTP ingestion, MIME processing, and the Workspace/Project/Inbox/Message domain, shared across the Community and Cloud distributions.",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "ext-openssl": "*",
+        "illuminate/broadcasting": "^13.0",
+        "illuminate/bus": "^13.0",
+        "illuminate/cache": "^13.0",
+        "illuminate/console": "^13.0",
+        "illuminate/contracts": "^13.0",
+        "illuminate/database": "^13.0",
+        "illuminate/http": "^13.0",
+        "illuminate/queue": "^13.0",
+        "illuminate/support": "^13.0",
+        "react/socket": "^1.17",
+        "sabberworm/php-css-parser": "^9.4",
+        "zbateson/mail-mime-parser": "^4.0",
+        "inertiajs/inertia-laravel": "^2.0",
+        "symfony/http-foundation": "^7.4.0 || ^8.0.0",
+        "symfony/mailer": "^7.4.0 || ^8.0.0",
+        "symfony/mime": "^7.4.0 || ^8.0.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.18",
+        "orchestra/testbench": "^11.1",
+        "phpunit/phpunit": "^12.0",
+        "phpstan/phpstan": "^2.2",
+        "larastan/larastan": "^3.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sendtrap\\Core\\": "src/",
+            "Sendtrap\\Core\\Database\\Factories\\": "database/factories/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Sendtrap\\Core\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sendtrap\\Core\\SendtrapCoreServiceProvider"
+            ]
+        },
+        "branch-alias": {
+            "dev-main": "0.1.x-dev"
+        }
+    },
+    "minimum-stability": "stable"
+}
