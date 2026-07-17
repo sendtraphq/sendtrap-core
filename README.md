@@ -16,12 +16,21 @@ built on.
 - **Domain** — `Workspace` → `Project` → `Inbox` → `Message`/`Attachment`
   Eloquent models, factories, and an append-only migration set.
 - **Token API** — a bearer-token REST API per inbox (list/filter messages,
-  detail JSON, raw/HTML views, attachments, wait-for-message polling), with
-  rate limiting hooks.
+  detail JSON, raw/HTML views, attachments, server-side wait/assert, filtered
+  bulk delete), with rate limiting hooks. The full surface is documented by an
+  OpenAPI 3.1 contract shipped in this package at
+  [`openapi/sendtrap.yaml`](openapi/sendtrap.yaml) (JSON twin and a Postman
+  collection alongside; regenerate with `openapi/generate.sh`). Hosts serve it
+  interactively — e.g. Sendtrap Community at `/docs/api/reference`.
 - **Message checks** — deliverability lint checks and an HTML client
   compatibility check scored against the caniemail dataset (see
   [NOTICE](NOTICE) for attribution).
 - **Shares & delivery** — public share links, webhooks, auto-forwarding.
+- **First-run seeding** (`php artisan sendtrap:send-test`) — one command
+  drops a rich example message (HTML + text, attachment, inline `cid:`
+  image, envelope-only BCC, merge tags) into an inbox with no configured
+  application; `--via-smtp` delivers it over a real loopback SMTP
+  conversation (STARTTLS + AUTH) instead of injecting into the pipeline.
 - **Host contracts** — `WorkspaceContext`, `WorkspaceAccess`, `Entitlements`,
   `UsageMeter`, `LegacyOwnershipFallback`: every product-policy decision
   (access, limits, quotas) is delegated to the consuming host application

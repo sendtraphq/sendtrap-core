@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Sendtrap\Core\Console\Commands\MigrateStorageToS3;
 use Sendtrap\Core\Console\Commands\PruneMessages;
+use Sendtrap\Core\Console\Commands\SendTest;
 use Sendtrap\Core\Console\Commands\SmtpServer;
 use Sendtrap\Core\Console\Commands\SyncCaniemailData;
 use Sendtrap\Core\Contracts\LegacyOwnershipFallback;
@@ -180,6 +181,7 @@ class SendtrapCoreServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 SmtpServer::class,
+                SendTest::class,
                 PruneMessages::class,
                 MigrateStorageToS3::class,
                 SyncCaniemailData::class,
