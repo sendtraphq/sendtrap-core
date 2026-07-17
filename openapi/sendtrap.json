@@ -1,0 +1,2659 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Sendtrap API",
+    "version": "1.0",
+    "summary": "HTTP API for Sendtrap inboxes — list, inspect, assert on and manage captured email.",
+    "description": "Sendtrap is an SMTP catcher / email sandbox. Every inbox exposes this HTTP API,\nauthenticated by the inbox's own API token. The API is served by both Sendtrap\nCommunity (self-hosted) and Sendtrap Cloud from the same core package; this\ndocument is the authoritative contract for the `/api/v1` surface and the\nMailtrap-compatible alias routes.\n\n## Authentication\n\nEvery request must carry the inbox API token, either as a bearer token:\n\n```\nAuthorization: Bearer <api_token>\n```\n\nor in the `X-Api-Token` header. The token scopes the request to exactly one\ninbox; there is no cross-inbox access. Find the token on the inbox's\nSettings page, or in the `api_token` field of `GET /api/v1/inbox`.\n\nRequests from IP addresses outside the inbox's configured allow-list are\nrejected with `403` even when the token is valid.\n\n## Rate limiting\n\nTwo limiters apply, keyed to the inbox (or to the caller IP when the token\nis invalid):\n\n- **General** (`inbox-api`): applies to every endpoint. The ceiling is\n  host-configured (Community: `SENDTRAP_API_REQUESTS_PER_MINUTE`, unlimited\n  by default with a 300/min fallback where a limit applies; Cloud: per plan).\n- **Blocking** (`inbox-api-wait`, 15/min): additionally applies to\n  `POST /v1/assert` and to `GET /v1/messages` when a `wait` parameter is\n  given, because those requests can hold a server worker open.\n\nThrottled responses include `X-RateLimit-Limit` / `X-RateLimit-Remaining`;\na rejected request returns `429` with `Retry-After`.\n\n## Blocking waits\n\n`GET /v1/messages?wait=N` and `POST /v1/assert` with `timeout: N` block\nserver-side until a matching message arrives or `N` seconds elapse. `N` is\nclamped to a server-configured ceiling (default 30 s). An assertion that\ntimes out is **not** an error: `/assert` always returns `200` with\n`matched: false` when nothing arrived.\n\n## Editions and gated features\n\nThe contract is identical in Community and Cloud. Where a feature is gated\nby plan in Cloud, the operation carries an `x-sendtrap-availability`\nextension: `community` describes availability in Sendtrap Community,\n`cloud` in Sendtrap Cloud. Calling a gated endpoint without access\nreturns `403`. Currently gated: the HTML compatibility check API\n(`GET /v1/messages/{id}/compatibility` and `min_compatibility_score` on\n`/assert`) — always available in Community, paid plans in Cloud.\n\n## Mailtrap compatibility\n\nThe `/sandboxes/{sandbox}/...` routes mirror a subset of the Mailtrap\nsandbox API so an existing Mailtrap test helper works after swapping only\nthe base URL and token. The `{sandbox}` path segment is accepted but not\nvalidated — the token already scopes the request to one inbox. Fields with\nno Sendtrap equivalent (templates, blacklist reports, POP3, granular\npermissions) are omitted rather than faked.\n\n## Versioning\n\n`/api/v1` is a compatibility surface: fields may be added, existing fields\nand semantics are not changed or removed within v1. The authoritative\nrevision of this document is the one shipped in the `sendtrap/core` release\n(`openapi/sendtrap.yaml`) matching your installed version.\n",
+    "license": {
+      "name": "MIT",
+      "identifier": "MIT"
+    },
+    "contact": {
+      "name": "Sendtrap",
+      "url": "https://github.com/sendtraphq"
+    }
+  },
+  "servers": [
+    {
+      "url": "{baseUrl}/api",
+      "description": "Your Sendtrap instance (Community self-hosted install, or Sendtrap Cloud).",
+      "variables": {
+        "baseUrl": {
+          "default": "http://localhost",
+          "description": "Root URL of the Sendtrap instance, without a trailing slash."
+        }
+      }
+    }
+  ],
+  "security": [
+    {
+      "bearerToken": []
+    },
+    {
+      "apiTokenHeader": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Inbox",
+      "description": "The authenticated inbox itself — credentials, limits, message counts."
+    },
+    {
+      "name": "Messages",
+      "description": "List, read, download and manage captured messages."
+    },
+    {
+      "name": "Testing",
+      "description": "Blocking assertions for CI / end-to-end test suites."
+    },
+    {
+      "name": "HTML Check",
+      "description": "Email-client HTML compatibility scoring (caniemail-based)."
+    },
+    {
+      "name": "Mailtrap compatibility",
+      "description": "Drop-in aliases for a subset of the Mailtrap sandbox API."
+    }
+  ],
+  "paths": {
+    "/v1/inbox": {
+      "get": {
+        "operationId": "getInbox",
+        "tags": [
+          "Inbox"
+        ],
+        "summary": "Get the authenticated inbox",
+        "description": "Details of the inbox the API token belongs to, including its SMTP\ncredentials and the total message count. Because the caller has proven\npossession of this inbox's own token, credential fields\n(`smtp_username`, `smtp_password`, `api_token`, `auto_forward_to`,\n`webhook_url`) are always included here.\n",
+        "responses": {
+          "200": {
+            "description": "The authenticated inbox.",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/X-RateLimit-Limit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/X-RateLimit-Remaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Inbox"
+                    }
+                  }
+                },
+                "examples": {
+                  "inbox": {
+                    "value": {
+                      "data": {
+                        "id": 12,
+                        "project_id": 3,
+                        "name": "Checkout e2e",
+                        "smtp_host": "sandbox.example.test",
+                        "smtp_ports": [
+                          1025,
+                          2525,
+                          587
+                        ],
+                        "smtp_username": "inbox-8f3a2c",
+                        "smtp_password": "EXAMPLE-smtp-password",
+                        "api_token": "EXAMPLE-api-token",
+                        "max_messages": 500,
+                        "auto_forward_to": null,
+                        "webhook_url": null,
+                        "allowed_ips": [],
+                        "effective_allowed_ips": [],
+                        "messages_count": 41,
+                        "created_at": "2026-07-01T09:30:00+00:00"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/messages": {
+      "get": {
+        "operationId": "listMessages",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "List messages",
+        "description": "Messages in the inbox, newest first, paginated with Laravel's standard\n`data` / `links` / `meta` envelope.\n\nWith `wait` > 0 and an initially empty result, the request blocks until\nat least one matching message arrives or `wait` seconds (clamped to the\nserver ceiling, default 30) elapse — useful in tests to await mail\nwithout polling. Blocking requests count against the tighter\n`inbox-api-wait` limiter (15/min). A timeout is not an error: the\nresponse is `200` with an empty `data` array.\n",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Substring match against subject, from address and from name.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subject_contains",
+            "in": "query",
+            "description": "Substring match against the subject only.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "test_id",
+            "in": "query",
+            "description": "Exact match against the message's `X-Sendtrap-Test-Id` header value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Substring match against recipients — both the To/Cc headers and the\nSMTP envelope (so BCC-only recipients match too).\n",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "wait",
+            "in": "query",
+            "description": "Maximum seconds to block waiting for a first matching message.\n`0` (default) returns immediately. Clamped server-side\n(default ceiling 30 s).\n",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "per_page",
+            "in": "query",
+            "description": "Page size. No server-side maximum is currently enforced.",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "One page of messages (possibly empty).",
+            "headers": {
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/X-RateLimit-Limit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/X-RateLimit-Remaining"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessagePage"
+                },
+                "examples": {
+                  "page": {
+                    "value": {
+                      "data": [
+                        {
+                          "id": 101,
+                          "test_id": "run-42",
+                          "from_address": "orders@example.com",
+                          "from_name": "Example Shop",
+                          "to": [
+                            {
+                              "address": "alice@example.com",
+                              "name": "Alice"
+                            }
+                          ],
+                          "envelope_to": [
+                            "alice@example.com",
+                            "audit@example.com"
+                          ],
+                          "subject": "Order #1234 confirmed",
+                          "size": 48213,
+                          "is_read": false,
+                          "has_attachments": true,
+                          "has_unresolved_merge_tags": false,
+                          "received_at": "2026-07-17T10:05:23+00:00"
+                        }
+                      ],
+                      "links": {
+                        "first": "http://localhost/api/v1/messages?page=1",
+                        "last": "http://localhost/api/v1/messages?page=1",
+                        "prev": null,
+                        "next": null
+                      },
+                      "meta": {
+                        "current_page": 1,
+                        "from": 1,
+                        "last_page": 1,
+                        "path": "http://localhost/api/v1/messages",
+                        "per_page": 50,
+                        "to": 1,
+                        "total": 1
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteMessages",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Delete messages",
+        "description": "Deletes messages, including stored raw sources and attachments. With no\nfilters, deletes **every** message in the inbox. With filters (same\nsemantics as the list endpoint), deletes only the matching messages —\ne.g. `?test_id=run-42` lets a test run on a shared inbox clean up just\nits own mail.\n",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Substring match against subject, from address and from name.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subject_contains",
+            "in": "query",
+            "description": "Substring match against the subject only.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "test_id",
+            "in": "query",
+            "description": "Exact match against the message's `X-Sendtrap-Test-Id` header value.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "description": "Substring match against To/Cc headers and the SMTP envelope.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Matching messages deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "deleted"
+                  ],
+                  "properties": {
+                    "deleted": {
+                      "type": "integer",
+                      "description": "Number of messages deleted."
+                    }
+                  }
+                },
+                "examples": {
+                  "deleted": {
+                    "value": {
+                      "deleted": 41
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/assert": {
+      "post": {
+        "operationId": "assertMessage",
+        "tags": [
+          "Testing"
+        ],
+        "summary": "Assert that a matching message arrives",
+        "description": "The primary testing endpoint: waits (up to `timeout` seconds, clamped\nto the server ceiling, default 30) for a message matching every given\nfilter, then returns `200` with `matched: true/false` and the matched\nmessage, if any. A non-match is an expected assertion outcome, not an\nHTTP error — check the `matched` flag.\n\nFilters combine with AND. The newest matching message wins. With\n`min_compatibility_score`, a candidate only matches once its HTML\ncompatibility ratio meets the threshold (see the HTML Check tag for\navailability).\n\nRate-limited by the `inbox-api-wait` limiter (15/min) regardless of\ntimeout value.\n",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "to": {
+                    "type": "string",
+                    "description": "Substring match against To/Cc headers and the SMTP envelope."
+                  },
+                  "subject_contains": {
+                    "type": "string",
+                    "description": "Substring match against the subject."
+                  },
+                  "search": {
+                    "type": "string",
+                    "description": "Substring match against subject, from address and from name."
+                  },
+                  "test_id": {
+                    "type": "string",
+                    "description": "Exact match against the `X-Sendtrap-Test-Id` header value."
+                  },
+                  "timeout": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "default": 0,
+                    "description": "Maximum seconds to wait. `0` checks once and returns immediately."
+                  },
+                  "min_compatibility_score": {
+                    "type": "number",
+                    "format": "float",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "description": "Minimum HTML compatibility ratio (0–100) the matched\nmessage must reach. Requires HTML Check API access.\n",
+                    "x-sendtrap-availability": {
+                      "community": "included",
+                      "cloud": "paid-plan"
+                    }
+                  }
+                }
+              },
+              "examples": {
+                "otp-mail": {
+                  "summary": "Wait up to 10 s for a password-reset mail to alice",
+                  "value": {
+                    "to": "alice@example.com",
+                    "subject_contains": "Reset your password",
+                    "test_id": "run-42",
+                    "timeout": 10
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assertion outcome (pass or fail).",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "matched",
+                    "message"
+                  ],
+                  "properties": {
+                    "matched": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/components/schemas/MessageSummary"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ],
+                      "description": "The matched message, or `null` when `matched` is `false`."
+                    }
+                  }
+                },
+                "examples": {
+                  "matched": {
+                    "value": {
+                      "matched": true,
+                      "message": {
+                        "id": 101,
+                        "test_id": "run-42",
+                        "from_address": "noreply@example.com",
+                        "from_name": "Example App",
+                        "to": [
+                          {
+                            "address": "alice@example.com",
+                            "name": null
+                          }
+                        ],
+                        "envelope_to": [
+                          "alice@example.com"
+                        ],
+                        "subject": "Reset your password",
+                        "size": 5120,
+                        "is_read": false,
+                        "has_attachments": false,
+                        "has_unresolved_merge_tags": false,
+                        "received_at": "2026-07-17T10:05:23+00:00"
+                      }
+                    }
+                  },
+                  "timed-out": {
+                    "value": {
+                      "matched": false,
+                      "message": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "IP not allowed, or `min_compatibility_score` used without HTML\nCheck API access.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/messages/{messageId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/messageId"
+        }
+      ],
+      "get": {
+        "operationId": "getMessage",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Get a message",
+        "description": "Full message detail: parsed bodies, headers in original order,\nextracted links, quality checks, attachment metadata and download URLs.\n",
+        "responses": {
+          "200": {
+            "description": "The message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MessageDetail"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateMessage",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Update a message (read state)",
+        "description": "The only mutable field is `is_read`. Omitting it marks the message read.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "is_read": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "data"
+                  ],
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/MessageSummary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteMessage",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Delete a message",
+        "responses": {
+          "200": {
+            "description": "Message deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "deleted"
+                  ],
+                  "properties": {
+                    "deleted": {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/messages/{messageId}/raw": {
+      "get": {
+        "operationId": "getMessageRaw",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Download the raw RFC 822 source",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The complete raw message source.",
+            "content": {
+              "text/plain; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/messages/{messageId}/html": {
+      "get": {
+        "operationId": "getMessageHtml",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Get the rendered HTML body",
+        "description": "The HTML body with inline `cid:` references rewritten to attachment\nURLs, ready for display. For a text-only message, returns the text\nbody wrapped in a `<pre>` block.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rendered HTML.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/messages/{messageId}/compatibility": {
+      "get": {
+        "operationId": "getMessageCompatibility",
+        "tags": [
+          "HTML Check"
+        ],
+        "summary": "Get the HTML compatibility report",
+        "description": "Email-client compatibility score for the message's HTML, with a\nper-feature issue breakdown (based on caniemail reference data).\nComputed on demand and cached per message.\n",
+        "x-sendtrap-availability": {
+          "community": "included",
+          "cloud": "paid-plan"
+        },
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The compatibility report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompatibilityReport"
+                },
+                "examples": {
+                  "report": {
+                    "value": {
+                      "status": "ok",
+                      "compatibility_ratio": 86.5,
+                      "issues": [
+                        {
+                          "feature_id": "css-display-grid",
+                          "title": "display:grid",
+                          "category": "css",
+                          "severity": "error",
+                          "unsupported_clients": [
+                            {
+                              "client": "outlook",
+                              "platform": "windows",
+                              "support": "n",
+                              "note": null
+                            }
+                          ]
+                        }
+                      ],
+                      "checked_at": "2026-07-17T10:06:02+00:00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "description": "IP not allowed, or the caller lacks HTML Check API access.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/v1/messages/{messageId}/attachments/{attachmentId}": {
+      "get": {
+        "operationId": "downloadAttachment",
+        "tags": [
+          "Messages"
+        ],
+        "summary": "Download an attachment",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/messageId"
+          },
+          {
+            "$ref": "#/components/parameters/attachmentId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The attachment content, as a download.",
+            "headers": {
+              "Content-Disposition": {
+                "description": "Attachment disposition with the original filename.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages": {
+      "get": {
+        "operationId": "mailtrapListMessages",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "List messages (Mailtrap alias)",
+        "description": "Returns a plain JSON array (no pagination envelope), 30 messages per\npage, newest first. `last_id` takes precedence over `page` for\ncursor-style iteration.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "description": "Substring match against subject, To header and from name.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "last_id",
+            "in": "query",
+            "description": "Return only messages with an id lower than this (cursor pagination).",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Messages, newest first.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SandboxMessage"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/sandbox"
+        },
+        {
+          "$ref": "#/components/parameters/messageId"
+        }
+      ],
+      "get": {
+        "operationId": "mailtrapGetMessage",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Get a message (Mailtrap alias)",
+        "responses": {
+          "200": {
+            "description": "The message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SandboxMessageDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "mailtrapUpdateMessage",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Update a message's read state (Mailtrap alias)",
+        "description": "Accepts either the Mailtrap-style nested body or a flat `is_read` field.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "is_read": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "is_read": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                }
+              },
+              "examples": {
+                "mailtrap-style": {
+                  "value": {
+                    "message": {
+                      "is_read": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The updated message.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SandboxMessageDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "mailtrapDeleteMessage",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Delete a message (Mailtrap alias)",
+        "responses": {
+          "200": {
+            "description": "The deleted message's last representation.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SandboxMessageDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/body.txt": {
+      "get": {
+        "operationId": "mailtrapGetBodyTxt",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Get the plain-text body (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The text body (empty string when the message has none).",
+            "content": {
+              "text/plain; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/body.html": {
+      "get": {
+        "operationId": "mailtrapGetBodyHtml",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Get the rendered HTML body (Mailtrap alias)",
+        "description": "Same rendering as `GET /v1/messages/{messageId}/html`.",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rendered HTML.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/body.htmlsource": {
+      "get": {
+        "operationId": "mailtrapGetBodyHtmlSource",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Get the original HTML source (Mailtrap alias)",
+        "description": "The HTML part exactly as received, without `cid:` rewriting (empty string when absent).",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Original HTML source.",
+            "content": {
+              "text/html; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/body.raw": {
+      "get": {
+        "operationId": "mailtrapGetBodyRaw",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Get the raw RFC 822 source (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The complete raw message source.",
+            "content": {
+              "text/plain; charset=utf-8": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/body.eml": {
+      "get": {
+        "operationId": "mailtrapGetBodyEml",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Download the message as .eml (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The raw message as an attachment download.",
+            "headers": {
+              "Content-Disposition": {
+                "description": "attachment; filename=\"message-{id}.eml\"",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "message/rfc822": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/mail_headers": {
+      "get": {
+        "operationId": "mailtrapGetHeaders",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Get message headers (Mailtrap alias)",
+        "description": "Headers as a single name→value object. When a header occurs more than\nonce (e.g. `Received`), only the last occurrence is kept — use\n`GET /v1/messages/{messageId}` for the full ordered header list.\n",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Header map.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "headers"
+                  ],
+                  "properties": {
+                    "headers": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "headers": {
+                    "value": {
+                      "headers": {
+                        "From": "Example Shop <orders@example.com>",
+                        "To": "alice@example.com",
+                        "Subject": "Order #1234 confirmed"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/attachments": {
+      "get": {
+        "operationId": "mailtrapListAttachments",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "List attachments (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attachment metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SandboxAttachment"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/attachments/{attachmentId}": {
+      "get": {
+        "operationId": "mailtrapGetAttachment",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Get attachment metadata (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          },
+          {
+            "$ref": "#/components/parameters/attachmentId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Attachment metadata.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SandboxAttachment"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/messages/{messageId}/attachments/{attachmentId}/download": {
+      "get": {
+        "operationId": "mailtrapDownloadAttachment",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Download an attachment (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          },
+          {
+            "$ref": "#/components/parameters/messageId"
+          },
+          {
+            "$ref": "#/components/parameters/attachmentId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The attachment content, as a download.",
+            "headers": {
+              "Content-Disposition": {
+                "description": "Attachment disposition with the original filename.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/clean": {
+      "patch": {
+        "operationId": "mailtrapClean",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Delete all messages (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The emptied sandbox.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sandbox"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
+    "/sandboxes/{sandbox}/all_read": {
+      "patch": {
+        "operationId": "mailtrapAllRead",
+        "tags": [
+          "Mailtrap compatibility"
+        ],
+        "summary": "Mark all messages read (Mailtrap alias)",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/sandbox"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The sandbox with updated unread count.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sandbox"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "The inbox API token as a bearer token."
+      },
+      "apiTokenHeader": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Api-Token",
+        "description": "The inbox API token as a plain header (alternative to the bearer form)."
+      }
+    },
+    "parameters": {
+      "messageId": {
+        "name": "messageId",
+        "in": "path",
+        "required": true,
+        "description": "Numeric message id. Messages belonging to a different inbox return `404`.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "attachmentId": {
+        "name": "attachmentId",
+        "in": "path",
+        "required": true,
+        "description": "Numeric attachment id. Must belong to the addressed message, else `404`.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "sandbox": {
+        "name": "sandbox",
+        "in": "path",
+        "required": true,
+        "description": "Accepted for Mailtrap URL compatibility but **not validated** — the API\ntoken alone determines the inbox. Any value works; generated URLs use\nthe inbox's SMTP username.\n",
+        "schema": {
+          "type": "string"
+        }
+      }
+    },
+    "headers": {
+      "X-RateLimit-Limit": {
+        "description": "Request ceiling per minute for the applicable limiter.",
+        "schema": {
+          "type": "integer"
+        }
+      },
+      "X-RateLimit-Remaining": {
+        "description": "Requests remaining in the current window.",
+        "schema": {
+          "type": "integer"
+        }
+      }
+    },
+    "responses": {
+      "Unauthorized": {
+        "description": "Missing or invalid API token.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "missing": {
+                "value": {
+                  "message": "API token missing."
+                }
+              },
+              "invalid": {
+                "value": {
+                  "message": "Invalid API token."
+                }
+              }
+            }
+          }
+        }
+      },
+      "IpForbidden": {
+        "description": "The caller's IP address is outside the inbox's allow-list.",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            },
+            "examples": {
+              "denied": {
+                "value": {
+                  "message": "Access denied for your IP address."
+                }
+              }
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "No such resource in this inbox (includes resources owned by other inboxes).",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      },
+      "TooManyRequests": {
+        "description": "Rate limit exceeded.",
+        "headers": {
+          "Retry-After": {
+            "description": "Seconds until the limiter window resets.",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          "X-RateLimit-Limit": {
+            "$ref": "#/components/headers/X-RateLimit-Limit"
+          },
+          "X-RateLimit-Remaining": {
+            "$ref": "#/components/headers/X-RateLimit-Remaining"
+          }
+        },
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/Error"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "description": "Common error envelope for every non-2xx JSON response.",
+        "required": [
+          "message"
+        ],
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Human-readable explanation of the failure."
+          }
+        }
+      },
+      "EmailAddress": {
+        "type": "object",
+        "description": "A parsed mailbox from an address header.",
+        "required": [
+          "address",
+          "name"
+        ],
+        "properties": {
+          "address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      },
+      "MessageSummary": {
+        "type": "object",
+        "description": "Lightweight message representation used in lists and assertion results.",
+        "required": [
+          "id",
+          "test_id",
+          "from_address",
+          "from_name",
+          "to",
+          "envelope_to",
+          "subject",
+          "size",
+          "is_read",
+          "has_attachments",
+          "has_unresolved_merge_tags",
+          "received_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "test_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Value of the `X-Sendtrap-Test-Id` header, if the sender set one."
+          },
+          "from_address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "from_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailAddress"
+            },
+            "description": "Parsed To header recipients."
+          },
+          "envelope_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "SMTP envelope recipients (includes BCC-only recipients)."
+          },
+          "subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "size": {
+            "type": "integer",
+            "description": "Raw message size in bytes."
+          },
+          "is_read": {
+            "type": "boolean"
+          },
+          "has_attachments": {
+            "type": "boolean"
+          },
+          "has_unresolved_merge_tags": {
+            "type": "boolean",
+            "description": "Whether unreplaced template tags like `{{name}}` were detected."
+          },
+          "received_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "MessageDetail": {
+        "type": "object",
+        "description": "Full message representation with parsed bodies, headers and attachments.",
+        "required": [
+          "id",
+          "inbox_id",
+          "message_id",
+          "test_id",
+          "envelope_from",
+          "envelope_to",
+          "from_address",
+          "from_name",
+          "to",
+          "cc",
+          "subject",
+          "size",
+          "is_read",
+          "has_html",
+          "has_text",
+          "has_attachments",
+          "has_unresolved_merge_tags",
+          "unresolved_merge_tags",
+          "received_at",
+          "html",
+          "text",
+          "links",
+          "checks",
+          "headers",
+          "attachments",
+          "urls"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "inbox_id": {
+            "type": "integer"
+          },
+          "message_id": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The Message-ID header value, without angle brackets."
+          },
+          "test_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "envelope_from": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SMTP envelope sender (MAIL FROM)."
+          },
+          "envelope_to": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "from_address": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "from_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "to": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailAddress"
+            }
+          },
+          "cc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EmailAddress"
+            }
+          },
+          "subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "size": {
+            "type": "integer"
+          },
+          "is_read": {
+            "type": "boolean"
+          },
+          "has_html": {
+            "type": "boolean"
+          },
+          "has_text": {
+            "type": "boolean"
+          },
+          "has_attachments": {
+            "type": "boolean"
+          },
+          "has_unresolved_merge_tags": {
+            "type": "boolean"
+          },
+          "unresolved_merge_tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The unreplaced template tags found in the bodies, e.g. `{{first_name}}`."
+          },
+          "received_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "html": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Original HTML body (`null` when the message has no HTML part)."
+          },
+          "text": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Plain-text body."
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Deduplicated `href` targets from the HTML body (excluding `mailto:`/`tel:`/fragment-only anchors)."
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageCheck"
+            },
+            "description": "Message-quality lint results. An `html_compatibility` entry is\nincluded only when a cached HTML Check result exists and the caller\nhas HTML Check API access.\n"
+          },
+          "headers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "name",
+                "value"
+              ],
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "All header lines in original order (duplicates preserved)."
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageAttachment"
+            }
+          },
+          "urls": {
+            "type": "object",
+            "required": [
+              "raw",
+              "html"
+            ],
+            "properties": {
+              "raw": {
+                "type": "string",
+                "format": "uri"
+              },
+              "html": {
+                "type": "string",
+                "format": "uri"
+              }
+            }
+          }
+        }
+      },
+      "MessageCheck": {
+        "type": "object",
+        "required": [
+          "key",
+          "passed",
+          "severity"
+        ],
+        "properties": {
+          "key": {
+            "type": "string",
+            "description": "Check identifier. Current checks: `missing_text_part`,\n`oversized_html`, `missing_list_unsubscribe`,\n`from_address_present`, `html_compatibility`. New checks may be\nadded within v1.\n"
+          },
+          "passed": {
+            "type": "boolean"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "info",
+              "warn",
+              "error"
+            ]
+          }
+        }
+      },
+      "MessageAttachment": {
+        "type": "object",
+        "required": [
+          "id",
+          "filename",
+          "content_type",
+          "size",
+          "checksum",
+          "is_inline",
+          "url"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "filename": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content_type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "size": {
+            "type": "integer"
+          },
+          "checksum": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "SHA-256 of the attachment content (hex)."
+          },
+          "is_inline": {
+            "type": "boolean",
+            "description": "Whether the part is an inline (`cid:`-referenced) asset rather than a file attachment."
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Authenticated download URL for this attachment."
+          }
+        }
+      },
+      "Inbox": {
+        "type": "object",
+        "description": "The authenticated inbox. Credential fields are always present for\nAPI-token callers (possession of the token is the credential).\n",
+        "required": [
+          "id",
+          "project_id",
+          "name",
+          "smtp_host",
+          "smtp_ports",
+          "max_messages",
+          "allowed_ips",
+          "effective_allowed_ips",
+          "created_at"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "project_id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "smtp_host": {
+            "type": "string",
+            "description": "Public SMTP host to point your application's mailer at."
+          },
+          "smtp_ports": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "smtp_username": {
+            "type": "string"
+          },
+          "smtp_password": {
+            "type": "string"
+          },
+          "api_token": {
+            "type": "string"
+          },
+          "max_messages": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Per-inbox retained-message cap (`null` = host default)."
+          },
+          "auto_forward_to": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Address real copies are forwarded to, when configured."
+          },
+          "webhook_url": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Webhook notified on message arrival, when configured."
+          },
+          "allowed_ips": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Inbox-level IP/CIDR allow-list ([] = no inbox-level restriction)."
+          },
+          "effective_allowed_ips": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The allow-list actually enforced (inbox and instance/workspace levels combined)."
+          },
+          "messages_count": {
+            "type": "integer",
+            "description": "Total messages currently in the inbox."
+          },
+          "created_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      },
+      "CompatibilityReport": {
+        "type": "object",
+        "required": [
+          "status",
+          "compatibility_ratio",
+          "issues",
+          "checked_at"
+        ],
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok"
+          },
+          "compatibility_ratio": {
+            "type": "number",
+            "format": "float",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Percentage (0–100, one decimal) of detected HTML/CSS features with\nfull support across the checked client set. `100.0` when no\ncheckable features were detected.\n"
+          },
+          "issues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CompatibilityIssue"
+            },
+            "description": "One entry per HTML feature with incomplete client support, errors first."
+          },
+          "checked_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CompatibilityIssue": {
+        "type": "object",
+        "required": [
+          "feature_id",
+          "title",
+          "category",
+          "severity",
+          "unsupported_clients"
+        ],
+        "properties": {
+          "feature_id": {
+            "type": "string",
+            "description": "caniemail feature slug, e.g. `css-display-grid`."
+          },
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "severity": {
+            "type": "string",
+            "enum": [
+              "warn",
+              "error"
+            ],
+            "description": "`error` when fewer than half of the checked clients support the feature."
+          },
+          "unsupported_clients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "client",
+                "platform",
+                "support",
+                "note"
+              ],
+              "properties": {
+                "client": {
+                  "type": "string",
+                  "description": "Client family, e.g. `outlook`, `gmail`."
+                },
+                "platform": {
+                  "type": "string",
+                  "description": "Platform, e.g. `windows`, `ios`, `desktop-webmail`."
+                },
+                "support": {
+                  "type": "string",
+                  "description": "caniemail support letter: `n` (none), `a` (partial), `u` (unknown)."
+                },
+                "note": {
+                  "type": [
+                    "string",
+                    "null"
+                  ],
+                  "description": "Support caveat note, when the reference data has one."
+                }
+              }
+            }
+          }
+        }
+      },
+      "SandboxMessage": {
+        "type": "object",
+        "description": "Mailtrap-compatible message representation (list form).",
+        "required": [
+          "id",
+          "sandbox_id",
+          "subject",
+          "sent_at",
+          "from_email",
+          "from_name",
+          "to_email",
+          "to_name",
+          "email_size",
+          "human_size",
+          "is_read",
+          "created_at",
+          "updated_at",
+          "html_path",
+          "txt_path",
+          "raw_path",
+          "html_source_path",
+          "download_path"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "sandbox_id": {
+            "type": "integer",
+            "description": "The Sendtrap inbox id."
+          },
+          "subject": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "sent_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time",
+            "description": "When Sendtrap received the message."
+          },
+          "from_email": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "from_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "to_email": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "First To-header recipient's address."
+          },
+          "to_name": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "email_size": {
+            "type": "integer"
+          },
+          "human_size": {
+            "type": "string",
+            "description": "Human-readable size, e.g. `47 KB`."
+          },
+          "is_read": {
+            "type": "boolean"
+          },
+          "created_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "html_path": {
+            "type": "string",
+            "format": "uri"
+          },
+          "txt_path": {
+            "type": "string",
+            "format": "uri"
+          },
+          "raw_path": {
+            "type": "string",
+            "format": "uri"
+          },
+          "html_source_path": {
+            "type": "string",
+            "format": "uri"
+          },
+          "download_path": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "SandboxMessageDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/SandboxMessage"
+          },
+          {
+            "type": "object",
+            "required": [
+              "html_body_size",
+              "text_body_size"
+            ],
+            "properties": {
+              "html_body_size": {
+                "type": "integer",
+                "description": "HTML body size in bytes (0 when the message has no HTML part)."
+              },
+              "text_body_size": {
+                "type": "integer"
+              }
+            }
+          }
+        ]
+      },
+      "SandboxAttachment": {
+        "type": "object",
+        "description": "Mailtrap-compatible attachment metadata.",
+        "required": [
+          "id",
+          "message_id",
+          "filename",
+          "attachment_type",
+          "content_type",
+          "content_id",
+          "transfer_encoding",
+          "attachment_size",
+          "checksum",
+          "created_at",
+          "updated_at",
+          "attachment_human_size",
+          "download_path"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "message_id": {
+            "type": "integer"
+          },
+          "filename": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "attachment_type": {
+            "type": "string",
+            "enum": [
+              "inline",
+              "attachment"
+            ]
+          },
+          "content_type": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "content_id": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "transfer_encoding": {
+            "type": "null",
+            "description": "Always `null` (not tracked; present for Mailtrap shape compatibility)."
+          },
+          "attachment_size": {
+            "type": "integer"
+          },
+          "checksum": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "created_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "attachment_human_size": {
+            "type": "string"
+          },
+          "download_path": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "Sandbox": {
+        "type": "object",
+        "description": "Mailtrap-compatible sandbox (inbox) representation.",
+        "required": [
+          "id",
+          "name",
+          "username",
+          "email_username",
+          "domain",
+          "email_domain",
+          "smtp_ports",
+          "emails_count",
+          "emails_unread_count",
+          "used"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string",
+            "description": "The inbox SMTP username."
+          },
+          "email_username": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "email_domain": {
+            "type": "string"
+          },
+          "smtp_ports": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            }
+          },
+          "emails_count": {
+            "type": "integer"
+          },
+          "emails_unread_count": {
+            "type": "integer"
+          },
+          "used": {
+            "type": "boolean"
+          }
+        }
+      },
+      "MessagePage": {
+        "type": "object",
+        "description": "Standard Laravel pagination envelope for message lists.",
+        "required": [
+          "data",
+          "links",
+          "meta"
+        ],
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageSummary"
+            }
+          },
+          "links": {
+            "type": "object",
+            "required": [
+              "first",
+              "last",
+              "prev",
+              "next"
+            ],
+            "properties": {
+              "first": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uri"
+              },
+              "last": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uri"
+              },
+              "prev": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uri"
+              },
+              "next": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "format": "uri"
+              }
+            }
+          },
+          "meta": {
+            "type": "object",
+            "required": [
+              "current_page",
+              "from",
+              "last_page",
+              "path",
+              "per_page",
+              "to",
+              "total"
+            ],
+            "properties": {
+              "current_page": {
+                "type": "integer"
+              },
+              "from": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "last_page": {
+                "type": "integer"
+              },
+              "links": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "page": {
+                      "type": [
+                        "integer",
+                        "null"
+                      ]
+                    },
+                    "active": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "path": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "per_page": {
+                "type": "integer"
+              },
+              "to": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "total": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

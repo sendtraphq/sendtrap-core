@@ -74,6 +74,36 @@ class InboxApiTest extends PackageTestCase
         $this->assertSame(1, $other->messages()->count());
     }
 
+    public function test_it_bulk_deletes_only_messages_matching_the_given_filters(): void
+    {
+        $inbox = $this->makeInbox();
+        Message::factory()->count(2)->for($inbox)->create(['test_id' => 'run-1']);
+        Message::factory()->for($inbox)->create(['test_id' => 'run-2']);
+        Message::factory()->for($inbox)->create(['test_id' => null]);
+
+        $this->withToken($inbox->api_token)
+            ->deleteJson('/api/v1/messages?test_id=run-1')
+            ->assertOk()
+            ->assertJson(['deleted' => 2]);
+
+        $this->assertSame(2, $inbox->messages()->count());
+        $this->assertSame(0, $inbox->messages()->where('test_id', 'run-1')->count());
+    }
+
+    public function test_it_bulk_deletes_by_recipient_filter(): void
+    {
+        $inbox = $this->makeInbox();
+        Message::factory()->for($inbox)->create(['to' => [['address' => 'alice@example.com', 'name' => null]]]);
+        Message::factory()->for($inbox)->create(['to' => [['address' => 'bob@example.com', 'name' => null]]]);
+
+        $this->withToken($inbox->api_token)
+            ->deleteJson('/api/v1/messages?to=alice@example.com')
+            ->assertOk()
+            ->assertJson(['deleted' => 1]);
+
+        $this->assertSame(1, $inbox->messages()->count());
+    }
+
     public function test_it_downloads_an_attachment(): void
     {
         Storage::fake('local');

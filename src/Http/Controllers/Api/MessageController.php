@@ -268,11 +268,14 @@ class MessageController extends Controller
     }
 
     /**
-     * Delete every message in the authenticated inbox.
+     * Delete messages in the authenticated inbox — every message by default,
+     * or only those matching the same filters index() takes (search,
+     * subject_contains, test_id, to), so a test run on a shared inbox can
+     * clean up just its own mail.
      */
     public function destroyAll(Request $request)
     {
-        $deleted = $this->inbox($request)->messages()->get()->each->delete()->count();
+        $deleted = $this->filteredMessages($this->inbox($request), $request)->get()->each->delete()->count();
 
         return response()->json(['deleted' => $deleted]);
     }
