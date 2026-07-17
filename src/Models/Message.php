@@ -204,4 +204,25 @@ class Message extends Model
 
         return $html;
     }
+
+    /**
+     * renderedHtml() with <base target="_blank"> injected, for the preview
+     * iframe. Without it, links navigate the iframe itself and most sites
+     * refuse to be framed (X-Frame-Options / frame-ancestors); with it they
+     * open a new tab, which the iframe sandbox permits via allow-popups.
+     */
+    public function previewHtml(?\Closure $attachmentUrl = null): string
+    {
+        $html = $this->renderedHtml($attachmentUrl);
+        $base = '<base target="_blank">';
+
+        $count = 0;
+        $html = preg_replace('/<head\b[^>]*>/i', '$0'.$base, $html, 1, $count);
+
+        if ($count === 0) {
+            $html = preg_replace('/<html\b[^>]*>/i', '$0'.$base, $html, 1, $count);
+        }
+
+        return $count === 0 ? $base.$html : $html;
+    }
 }

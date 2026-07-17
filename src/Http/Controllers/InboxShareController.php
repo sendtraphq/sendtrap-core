@@ -107,7 +107,7 @@ class InboxShareController extends Controller
         $inbox = $this->resolve($token)->inbox;
         abort_unless($message->inbox_id === $inbox->id, 404);
 
-        $html = $message->renderedHtml(
+        $html = $message->previewHtml(
             fn (Attachment $attachment) => route('share.inbox.attachment', [$token, $message, $attachment])
         );
 

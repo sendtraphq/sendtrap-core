@@ -154,7 +154,7 @@ onUnmounted(() => clearInterval(pollTimer));
                                 <div class="flex-1 overflow-auto bg-slate-100/70 p-5">
                                     <div class="mx-auto overflow-hidden rounded-xl bg-white shadow-xl ring-1 ring-slate-200 transition-all duration-300 ease-out"
                                         style="height: 100%;" :style="frameStyle">
-                                        <iframe :src="detail.urls.html" sandbox="allow-same-origin" class="block h-full w-full bg-white" title="HTML preview"></iframe>
+                                        <iframe :src="detail.urls.html" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox" class="block h-full w-full bg-white" title="HTML preview"></iframe>
                                     </div>
                                 </div>
                             </template>

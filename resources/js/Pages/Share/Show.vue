@@ -21,7 +21,7 @@ const formatDate = (iso) => iso ? new Date(iso).toLocaleString() : '';
                         To: {{ (message.to || []).map(t => t.address).join(', ') }} · {{ formatDate(message.received_at) }}
                     </div>
                 </div>
-                <iframe v-if="message.has_html" :src="message.html_url" sandbox="allow-same-origin"
+                <iframe v-if="message.has_html" :src="message.html_url" sandbox="allow-same-origin allow-popups allow-popups-to-escape-sandbox"
                     class="w-full" style="height: 70vh;" title="Shared message"></iframe>
                 <pre v-else class="p-6 whitespace-pre-wrap text-sm text-gray-800">{{ message.text }}</pre>
             </div>

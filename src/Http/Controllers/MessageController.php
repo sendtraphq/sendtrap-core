@@ -115,7 +115,7 @@ class MessageController extends Controller
     {
         $this->authorize('view', $message);
 
-        return response($message->renderedHtml())
+        return response($message->previewHtml())
             ->header('Content-Type', 'text/html; charset=utf-8')
             ->header('Content-Security-Policy', "script-src 'none'");
     }
