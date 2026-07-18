@@ -4,6 +4,7 @@ namespace Sendtrap\Core\Expect;
 
 use InvalidArgumentException;
 use Sendtrap\Core\Models\Message;
+use Sendtrap\Core\Support\MessageLinter;
 
 /**
  * A parsed condition field reference. Most fields are bare names
@@ -107,7 +108,7 @@ final class FieldRef
                 ->pluck('value')
                 ->values()
                 ->all(),
-            'checks' => collect(\Sendtrap\Core\Support\MessageLinter::lint($message))
+            'checks' => collect(MessageLinter::lint($message))
                 ->firstWhere('key', $this->param)['passed'] ?? null,
         };
     }

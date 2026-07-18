@@ -5,7 +5,7 @@
 **Please do not open public issues or pull requests for security
 vulnerabilities.**
 
-Report vulnerabilities privately by email to **security@sendtrap.dev**. Include a
+Report vulnerabilities privately by email to **$SECURITY_CONTACT**. Include a
 description of the issue, a proof of concept if you have one, and the
 affected version(s).
 

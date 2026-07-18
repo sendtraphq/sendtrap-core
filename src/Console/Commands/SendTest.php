@@ -231,7 +231,7 @@ class SendTest extends Command
         </html>
         HTML;
 
-        $attachment = <<<TXT
+        $attachment = <<<'TXT'
         This file rode along as a normal attachment. Its size, content type
         and checksum are on the message's attachment list — and it can be
         downloaded through the UI or the API.

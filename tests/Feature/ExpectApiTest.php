@@ -5,6 +5,7 @@ namespace Sendtrap\Core\Tests\Feature;
 use Closure;
 use Illuminate\Support\Facades\Storage;
 use Sendtrap\Core\Contracts\MessageWaiter;
+use Sendtrap\Core\Jobs\ProcessIncomingMessage;
 use Sendtrap\Core\Models\Inbox;
 use Sendtrap\Core\Models\Message;
 use Sendtrap\Core\Models\Workspace;
@@ -121,7 +122,7 @@ class ExpectApiTest extends PackageTestCase
             '--b1--',
             '',
         ]);
-        (new \Sendtrap\Core\Jobs\ProcessIncomingMessage($inbox->id, $raw, 'sender@example.com', ['alice@example.com']))->handle();
+        (new ProcessIncomingMessage($inbox->id, $raw, 'sender@example.com', ['alice@example.com']))->handle();
 
         $this->expectJson($inbox, [
             'match' => [['field' => 'subject', 'op' => 'starts_with', 'value' => 'Verify']],
