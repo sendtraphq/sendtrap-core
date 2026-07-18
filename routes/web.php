@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Sendtrap\Core\Http\Controllers\InboxShareController;
 use Sendtrap\Core\Http\Controllers\ShareController;
+use Sendtrap\Core\Http\Middleware\DenySearchIndexing;
 
 /*
  * Plan 06 Phase 3b slice 8 (§1.6/§1.6.2): moved unedited from the host's
@@ -30,16 +31,16 @@ use Sendtrap\Core\Http\Controllers\ShareController;
 /*
  * Public share links — no auth.
  */
-Route::get('/share/{token}', [ShareController::class, 'show'])->name('share.show');
-Route::get('/share/{token}/html', [ShareController::class, 'html'])->name('share.html');
+Route::get('/share/{token}', [ShareController::class, 'show'])->name('share.show')->middleware(DenySearchIndexing::class);
+Route::get('/share/{token}/html', [ShareController::class, 'html'])->name('share.html')->middleware(DenySearchIndexing::class);
 
 /*
  * Public inbox share links — no auth. Lets a whole inbox be shared with an
  * external client (e.g. to watch test emails land on a dev site).
  */
-Route::get('/share/inbox/{token}', [InboxShareController::class, 'show'])->name('share.inbox.show');
-Route::get('/share/inbox/{token}/messages', [InboxShareController::class, 'messages'])->name('share.inbox.messages');
-Route::get('/share/inbox/{token}/messages/{message}', [InboxShareController::class, 'message'])->name('share.inbox.message');
-Route::get('/share/inbox/{token}/messages/{message}/html', [InboxShareController::class, 'html'])->name('share.inbox.html');
+Route::get('/share/inbox/{token}', [InboxShareController::class, 'show'])->name('share.inbox.show')->middleware(DenySearchIndexing::class);
+Route::get('/share/inbox/{token}/messages', [InboxShareController::class, 'messages'])->name('share.inbox.messages')->middleware(DenySearchIndexing::class);
+Route::get('/share/inbox/{token}/messages/{message}', [InboxShareController::class, 'message'])->name('share.inbox.message')->middleware(DenySearchIndexing::class);
+Route::get('/share/inbox/{token}/messages/{message}/html', [InboxShareController::class, 'html'])->name('share.inbox.html')->middleware(DenySearchIndexing::class);
 Route::get('/share/inbox/{token}/messages/{message}/attachments/{attachment}', [InboxShareController::class, 'attachment'])
-    ->name('share.inbox.attachment');
+    ->name('share.inbox.attachment')->middleware(DenySearchIndexing::class);

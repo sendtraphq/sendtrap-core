@@ -11,6 +11,7 @@ use Sendtrap\Core\Console\Commands\SendTest;
 use Sendtrap\Core\Console\Commands\SmtpServer;
 use Sendtrap\Core\Console\Commands\SyncCaniemailData;
 use Sendtrap\Core\Contracts\LegacyOwnershipFallback;
+use Sendtrap\Core\Contracts\MessageWaiter;
 use Sendtrap\Core\Models\Inbox;
 use Sendtrap\Core\Models\Message;
 use Sendtrap\Core\Models\Project;
@@ -18,6 +19,7 @@ use Sendtrap\Core\Policies\InboxPolicy;
 use Sendtrap\Core\Policies\MessagePolicy;
 use Sendtrap\Core\Policies\ProjectPolicy;
 use Sendtrap\Core\Support\NullLegacyOwnershipFallback;
+use Sendtrap\Core\Support\PollingMessageWaiter;
 
 /**
  * Boots the public Sendtrap core package.
@@ -105,6 +107,11 @@ class SendtrapCoreServiceProvider extends ServiceProvider
         // other core contracts (WorkspaceContext/WorkspaceAccess/
         // Entitlements/UsageMeter) intentionally keep NO package default.
         $this->app->bindIf(LegacyOwnershipFallback::class, NullLegacyOwnershipFallback::class);
+
+        // The /expect wait seam (Plan 02): polling by default, bindIf so a
+        // host can swap in a notification-backed waiter (Plan 10) without a
+        // public API change.
+        $this->app->bindIf(MessageWaiter::class, PollingMessageWaiter::class);
     }
 
     /**

@@ -505,6 +505,102 @@
         }
       }
     },
+    "/v1/expect": {
+      "post": {
+        "operationId": "expectMessage",
+        "tags": [
+          "Testing"
+        ],
+        "summary": "Expect messages — wait, match, assert, diagnose",
+        "description": "The recommended testing endpoint: one deterministic request that\nwaits for mail, evaluates expressive **match** conditions to select\ncandidate messages, applies post-match **assert** conditions, and\nreturns a machine-readable diagnostic that distinguishes *no mail\narrived* (`no_candidates`) from *mail arrived but didn't match*\n(`no_match`) from *the right mail arrived with the wrong content*\n(`assertions_failed`). Supersedes `/assert` for new integrations\n(which remains unchanged).\n\nConditions are `{field, op, value}` triples. Fields: `subject`,\n`from.address`, `from.name`, `to`, `cc`, `envelope_to`, `text`,\n`html`, `links`, `test_id`, `message_id`, `size`, `is_read`,\n`has_unresolved_merge_tags`, `attachments.count`,\n`attachments.filename`, `attachments.content_type`,\n`header.<Name>`, `checks.<key>`.\nOperators: `equals`, `contains`, `starts_with`, `ends_with`,\n`matches` (bounded regex), `exists`, and `gt`/`gte`/`lt`/`lte` for\nnumeric fields. List-valued fields (recipients, links, attachment\nmetadata, headers) pass when **any** element satisfies the operator.\n\nThe wait blocks server-side up to `wait.timeout_ms` (clamped to the\nserver ceiling, default 30 s) and keeps re-evaluating until the whole\nexpectation — count requirement **and** assertions — is satisfied.\nRate-limited by the `inbox-api-wait` limiter (15/min).\n\n`mode: strict` returns **422** with the same diagnostic body when the\nexpectation is unmet, so plain HTTP-error handling fails a CI step.\nRequests are validated before any message parsing; caps: 20\nconditions per list, 1 KiB values, 256-byte regexes, 50 candidates\nevaluated per pass.\n",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExpectRequest"
+              },
+              "examples": {
+                "welcome-email": {
+                  "summary": "Wait 10 s for a welcome mail and verify its content",
+                  "value": {
+                    "match": [
+                      {
+                        "field": "to",
+                        "op": "contains",
+                        "value": "alice@example.com"
+                      },
+                      {
+                        "field": "subject",
+                        "op": "contains",
+                        "value": "Welcome"
+                      }
+                    ],
+                    "assert": [
+                      {
+                        "field": "links",
+                        "op": "matches",
+                        "value": "example\\.com/verify\\?code=\\d+"
+                      },
+                      {
+                        "field": "attachments.count",
+                        "op": "equals",
+                        "value": 0
+                      }
+                    ],
+                    "scope": {
+                      "test_id": "run-42"
+                    },
+                    "wait": {
+                      "timeout_ms": 10000
+                    },
+                    "mode": "strict"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Report-mode result (any outcome), or a strict-mode success.\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExpectResult"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/IpForbidden"
+          },
+          "422": {
+            "description": "Invalid request (unknown field/operator, bad regex, cap\nexceeded — body is the common error envelope with a\n`request_id`), or a strict-mode unmet expectation (body is the\nfull `ExpectResult` diagnostic).\n",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/components/schemas/Error"
+                    },
+                    {
+                      "$ref": "#/components/schemas/ExpectResult"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "$ref": "#/components/responses/TooManyRequests"
+          }
+        }
+      }
+    },
     "/v1/messages/{messageId}": {
       "parameters": [
         {
@@ -2248,6 +2344,248 @@
                 }
               }
             }
+          }
+        }
+      },
+      "ExpectCondition": {
+        "type": "object",
+        "required": [
+          "field",
+          "op"
+        ],
+        "properties": {
+          "field": {
+            "type": "string",
+            "description": "One of the documented field names, including the parameterized\n`header.<Name>` and `checks.<key>` families.\n",
+            "examples": [
+              "subject",
+              "to",
+              "links",
+              "header.X-Campaign",
+              "attachments.count"
+            ]
+          },
+          "op": {
+            "type": "string",
+            "enum": [
+              "equals",
+              "contains",
+              "starts_with",
+              "ends_with",
+              "matches",
+              "exists",
+              "gt",
+              "gte",
+              "lt",
+              "lte"
+            ]
+          },
+          "value": {
+            "description": "String for text operators (regex body for `matches` — the server\nadds delimiters, user input never chooses modifiers), number for\nnumeric fields, boolean for `is_read`/`checks.*`. Omitted for\n`exists`.\n"
+          }
+        }
+      },
+      "ExpectRequest": {
+        "type": "object",
+        "description": "At least one `match` (or `assert`) condition is required.",
+        "properties": {
+          "match": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/ExpectCondition"
+            },
+            "description": "Candidate selection — a message must satisfy every match condition."
+          },
+          "assert": {
+            "type": "array",
+            "maxItems": 20,
+            "items": {
+              "$ref": "#/components/schemas/ExpectCondition"
+            },
+            "description": "Post-match checks, applied to every matched message. Failures\nproduce `assertions_failed` with per-condition diagnostics —\ndistinguishing wrong content from absent mail.\n"
+          },
+          "scope": {
+            "type": "object",
+            "description": "Boundaries that stop old or unrelated mail satisfying a new expectation.",
+            "properties": {
+              "test_id": {
+                "type": "string",
+                "description": "Exact `X-Sendtrap-Test-Id` value."
+              },
+              "received_after": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "received_before": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "after_message_id": {
+                "type": "integer",
+                "description": "Only messages with a higher id (cursor from a previous response)."
+              },
+              "unread_only": {
+                "type": "boolean",
+                "default": false
+              }
+            }
+          },
+          "wait": {
+            "type": "object",
+            "properties": {
+              "timeout_ms": {
+                "type": "integer",
+                "minimum": 0,
+                "default": 0,
+                "description": "Server-side wait budget in milliseconds, clamped to the server ceiling."
+              }
+            }
+          },
+          "count": {
+            "type": "object",
+            "description": "`at_least` (default 1) and `exactly` are mutually exclusive.",
+            "properties": {
+              "at_least": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              },
+              "exactly": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100
+              }
+            }
+          },
+          "sort": {
+            "type": "string",
+            "enum": [
+              "newest",
+              "oldest"
+            ],
+            "default": "newest",
+            "description": "Candidate evaluation order, and the order of returned matches."
+          },
+          "mark_read": {
+            "type": "boolean",
+            "default": false,
+            "description": "Mark matched messages read on success (pairs with `scope.unread_only` for consume-once flows)."
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "report",
+              "strict"
+            ],
+            "default": "report"
+          }
+        }
+      },
+      "ExpectResult": {
+        "type": "object",
+        "required": [
+          "matched",
+          "status",
+          "elapsed_ms",
+          "candidates_seen",
+          "count",
+          "messages",
+          "conditions",
+          "request_id"
+        ],
+        "properties": {
+          "matched": {
+            "type": "boolean",
+            "description": "True only when the count requirement and every assertion are satisfied."
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "matched",
+              "no_candidates",
+              "no_match",
+              "count_mismatch",
+              "assertions_failed"
+            ],
+            "description": "`no_candidates`: nothing in scope arrived. `no_match`: scoped\nmail arrived but none passed the match conditions (diagnosed\nagainst the newest scoped message). `count_mismatch`: matches\narrived but not the required number. `assertions_failed`: the\nexpected mail arrived with the wrong content.\n"
+          },
+          "elapsed_ms": {
+            "type": "integer"
+          },
+          "candidates_seen": {
+            "type": "integer",
+            "description": "Messages currently inside the scope, before match conditions."
+          },
+          "count": {
+            "type": "object",
+            "required": [
+              "required",
+              "actual"
+            ],
+            "properties": {
+              "required": {
+                "type": "object",
+                "description": "Echo of the requirement: `{\"at_least\": n}` or `{\"exactly\": n}`."
+              },
+              "actual": {
+                "type": "integer"
+              }
+            }
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageSummary"
+            },
+            "description": "Matched messages (first 10)."
+          },
+          "conditions": {
+            "type": "array",
+            "description": "Per-condition diagnostics. `passed` is `null` when the condition\nnever ran (nothing to evaluate against). `actual` is a truncated,\ndiagnostics-safe representation — message bodies are never echoed.\n",
+            "items": {
+              "type": "object",
+              "required": [
+                "type",
+                "field",
+                "op",
+                "passed"
+              ],
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "match",
+                    "assert"
+                  ]
+                },
+                "field": {
+                  "type": "string"
+                },
+                "op": {
+                  "type": "string"
+                },
+                "value": {},
+                "passed": {
+                  "type": [
+                    "boolean",
+                    "null"
+                  ]
+                },
+                "actual": {}
+              }
+            }
+          },
+          "assertions_failed_on": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "description": "Id of the first matched message an assertion failed on."
+          },
+          "request_id": {
+            "type": "string",
+            "format": "uuid"
           }
         }
       },

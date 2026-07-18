@@ -415,6 +415,88 @@ paths:
         '429':
           $ref: '#/components/responses/TooManyRequests'
 
+  /v1/expect:
+    post:
+      operationId: expectMessage
+      tags: [Testing]
+      summary: Expect messages — wait, match, assert, diagnose
+      description: |
+        The recommended testing endpoint: one deterministic request that
+        waits for mail, evaluates expressive **match** conditions to select
+        candidate messages, applies post-match **assert** conditions, and
+        returns a machine-readable diagnostic that distinguishes *no mail
+        arrived* (`no_candidates`) from *mail arrived but didn't match*
+        (`no_match`) from *the right mail arrived with the wrong content*
+        (`assertions_failed`). Supersedes `/assert` for new integrations
+        (which remains unchanged).
+
+        Conditions are `{field, op, value}` triples. Fields: `subject`,
+        `from.address`, `from.name`, `to`, `cc`, `envelope_to`, `text`,
+        `html`, `links`, `test_id`, `message_id`, `size`, `is_read`,
+        `has_unresolved_merge_tags`, `attachments.count`,
+        `attachments.filename`, `attachments.content_type`,
+        `header.<Name>`, `checks.<key>`.
+        Operators: `equals`, `contains`, `starts_with`, `ends_with`,
+        `matches` (bounded regex), `exists`, and `gt`/`gte`/`lt`/`lte` for
+        numeric fields. List-valued fields (recipients, links, attachment
+        metadata, headers) pass when **any** element satisfies the operator.
+
+        The wait blocks server-side up to `wait.timeout_ms` (clamped to the
+        server ceiling, default 30 s) and keeps re-evaluating until the whole
+        expectation — count requirement **and** assertions — is satisfied.
+        Rate-limited by the `inbox-api-wait` limiter (15/min).
+
+        `mode: strict` returns **422** with the same diagnostic body when the
+        expectation is unmet, so plain HTTP-error handling fails a CI step.
+        Requests are validated before any message parsing; caps: 20
+        conditions per list, 1 KiB values, 256-byte regexes, 50 candidates
+        evaluated per pass.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExpectRequest'
+            examples:
+              welcome-email:
+                summary: Wait 10 s for a welcome mail and verify its content
+                value:
+                  match:
+                    - { field: to, op: contains, value: alice@example.com }
+                    - { field: subject, op: contains, value: Welcome }
+                  assert:
+                    - { field: links, op: matches, value: 'example\.com/verify\?code=\d+' }
+                    - { field: attachments.count, op: equals, value: 0 }
+                  scope: { test_id: run-42 }
+                  wait: { timeout_ms: 10000 }
+                  mode: strict
+      responses:
+        '200':
+          description: |
+            Report-mode result (any outcome), or a strict-mode success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExpectResult'
+        '422':
+          description: |
+            Invalid request (unknown field/operator, bad regex, cap
+            exceeded — body is the common error envelope with a
+            `request_id`), or a strict-mode unmet expectation (body is the
+            full `ExpectResult` diagnostic).
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error'
+                  - $ref: '#/components/schemas/ExpectResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/IpForbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
   /v1/messages/{messageId}:
     parameters:
       - $ref: '#/components/parameters/messageId'
@@ -1464,6 +1546,159 @@ components:
               note:
                 type: [string, 'null']
                 description: Support caveat note, when the reference data has one.
+
+    ExpectCondition:
+      type: object
+      required: [field, op]
+      properties:
+        field:
+          type: string
+          description: |
+            One of the documented field names, including the parameterized
+            `header.<Name>` and `checks.<key>` families.
+          examples: [subject, to, links, header.X-Campaign, attachments.count]
+        op:
+          type: string
+          enum: [equals, contains, starts_with, ends_with, matches, exists, gt, gte, lt, lte]
+        value:
+          description: |
+            String for text operators (regex body for `matches` — the server
+            adds delimiters, user input never chooses modifiers), number for
+            numeric fields, boolean for `is_read`/`checks.*`. Omitted for
+            `exists`.
+
+    ExpectRequest:
+      type: object
+      description: At least one `match` (or `assert`) condition is required.
+      properties:
+        match:
+          type: array
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/ExpectCondition'
+          description: Candidate selection — a message must satisfy every match condition.
+        assert:
+          type: array
+          maxItems: 20
+          items:
+            $ref: '#/components/schemas/ExpectCondition'
+          description: |
+            Post-match checks, applied to every matched message. Failures
+            produce `assertions_failed` with per-condition diagnostics —
+            distinguishing wrong content from absent mail.
+        scope:
+          type: object
+          description: Boundaries that stop old or unrelated mail satisfying a new expectation.
+          properties:
+            test_id:
+              type: string
+              description: Exact `X-Sendtrap-Test-Id` value.
+            received_after:
+              type: string
+              format: date-time
+            received_before:
+              type: string
+              format: date-time
+            after_message_id:
+              type: integer
+              description: Only messages with a higher id (cursor from a previous response).
+            unread_only:
+              type: boolean
+              default: false
+        wait:
+          type: object
+          properties:
+            timeout_ms:
+              type: integer
+              minimum: 0
+              default: 0
+              description: Server-side wait budget in milliseconds, clamped to the server ceiling.
+        count:
+          type: object
+          description: '`at_least` (default 1) and `exactly` are mutually exclusive.'
+          properties:
+            at_least:
+              type: integer
+              minimum: 1
+              maximum: 100
+            exactly:
+              type: integer
+              minimum: 1
+              maximum: 100
+        sort:
+          type: string
+          enum: [newest, oldest]
+          default: newest
+          description: Candidate evaluation order, and the order of returned matches.
+        mark_read:
+          type: boolean
+          default: false
+          description: Mark matched messages read on success (pairs with `scope.unread_only` for consume-once flows).
+        mode:
+          type: string
+          enum: [report, strict]
+          default: report
+
+    ExpectResult:
+      type: object
+      required: [matched, status, elapsed_ms, candidates_seen, count, messages, conditions, request_id]
+      properties:
+        matched:
+          type: boolean
+          description: True only when the count requirement and every assertion are satisfied.
+        status:
+          type: string
+          enum: [matched, no_candidates, no_match, count_mismatch, assertions_failed]
+          description: |
+            `no_candidates`: nothing in scope arrived. `no_match`: scoped
+            mail arrived but none passed the match conditions (diagnosed
+            against the newest scoped message). `count_mismatch`: matches
+            arrived but not the required number. `assertions_failed`: the
+            expected mail arrived with the wrong content.
+        elapsed_ms:
+          type: integer
+        candidates_seen:
+          type: integer
+          description: Messages currently inside the scope, before match conditions.
+        count:
+          type: object
+          required: [required, actual]
+          properties:
+            required:
+              type: object
+              description: 'Echo of the requirement: `{"at_least": n}` or `{"exactly": n}`.'
+            actual:
+              type: integer
+        messages:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessageSummary'
+          description: Matched messages (first 10).
+        conditions:
+          type: array
+          description: |
+            Per-condition diagnostics. `passed` is `null` when the condition
+            never ran (nothing to evaluate against). `actual` is a truncated,
+            diagnostics-safe representation — message bodies are never echoed.
+          items:
+            type: object
+            required: [type, field, op, passed]
+            properties:
+              type:
+                type: string
+                enum: [match, assert]
+              field: { type: string }
+              op: { type: string }
+              value: {}
+              passed:
+                type: [boolean, 'null']
+              actual: {}
+        assertions_failed_on:
+          type: [integer, 'null']
+          description: Id of the first matched message an assertion failed on.
+        request_id:
+          type: string
+          format: uuid
 
     SandboxMessage:
       type: object

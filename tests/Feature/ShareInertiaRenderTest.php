@@ -65,6 +65,27 @@ class ShareInertiaRenderTest extends PackageTestCase
         return $project->inboxes()->create(['name' => 'Inbox']);
     }
 
+    public function test_share_pages_carry_a_noindex_header(): void
+    {
+        $inbox = $this->makeInbox();
+        $message = Message::factory()->for($inbox)->create();
+        $messageShare = $message->shares()->create();
+        $inboxShare = $inbox->shares()->create(['expires_at' => now()->addDays(7)]);
+
+        // Tokenized share URLs leak into indexes when posted somewhere
+        // crawlable — every share surface must answer noindex. (Inertia
+        // header: the package testbench ships no root Blade view.)
+        $this->get(route('share.show', $messageShare->token), [InertiaHeader::INERTIA => 'true'])
+            ->assertOk()
+            ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+        $this->get(route('share.inbox.show', $inboxShare->token), [InertiaHeader::INERTIA => 'true'])
+            ->assertOk()
+            ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+        $this->get(route('share.inbox.message', [$inboxShare->token, $message->id]))
+            ->assertOk()
+            ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+    }
+
     public function test_share_show_renders_the_inertia_message_page(): void
     {
         $inbox = $this->makeInbox();

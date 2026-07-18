@@ -5,6 +5,30 @@ based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
 project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html)
 (`0.x` semantics: breaking changes may land in minors until 1.0).
 
+## v0.4.0 — 2026-07-17
+
+### Added
+- **`POST /api/v1/expect`** — the recommended testing endpoint: one
+  deterministic request that waits for mail, evaluates expressive match
+  conditions (subject, recipients, envelope, bodies, headers, links,
+  attachments, quality checks), applies post-match assertions, and returns
+  a machine-readable diagnostic distinguishing `no_candidates` /
+  `no_match` / `count_mismatch` / `assertions_failed`. Scope cursors
+  (`test_id`, `received_after/before`, `after_message_id`, `unread_only`),
+  `at_least`/`exactly` count semantics, `mark_read` consumption, and a
+  `strict` mode that turns an unmet expectation into HTTP 422. Requests are
+  fully validated before any message parsing; evaluation is bounded (SQL
+  narrowing, capped candidates, delimited regexes). `/assert` is unchanged.
+- `Sendtrap\Core\Contracts\MessageWaiter` — the transport-neutral wait seam
+  behind `/expect`; hosts can rebind it to replace polling with push
+  notification infrastructure without a public API change.
+
+### Fixed
+- Every public share route now answers with `X-Robots-Tag: noindex,
+  nofollow` — tokenized share URLs expose captured mail and must never
+  enter a search index, and robots.txt rules alone don't stop URL-only
+  indexing of links posted somewhere crawlable.
+
 ## v0.3.0 — 2026-07-17
 
 ### Added
