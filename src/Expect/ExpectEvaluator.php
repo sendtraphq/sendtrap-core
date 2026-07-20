@@ -26,14 +26,22 @@ final class ExpectEvaluator
     {
         $candidatesSeen = $this->scopeQuery()->count();
 
-        /** @var Collection<int, Message> $candidates */
-        $candidates = $this->scopeQuery()
+        // One row beyond the cap is fetched purely as a truncation probe: it
+        // is never evaluated, but its presence proves the prefiltered set
+        // exceeds the cap. (Deciding this from the scope count instead would
+        // falsely flag a prefilter that narrowed the scope to exactly the
+        // cap.)
+        /** @var Collection<int, Message> $fetched */
+        $fetched = $this->scopeQuery()
             ->tap(fn ($q) => $this->applyPrefilter($q))
             ->with('attachments')
             ->orderBy('received_at', $this->spec->sort === 'newest' ? 'desc' : 'asc')
             ->orderBy('id', $this->spec->sort === 'newest' ? 'desc' : 'asc')
-            ->limit(self::CANDIDATE_CAP)
+            ->limit(self::CANDIDATE_CAP + 1)
             ->get();
+
+        $setComplete = $fetched->count() <= self::CANDIDATE_CAP;
+        $candidates = $fetched->take(self::CANDIDATE_CAP);
 
         $matched = $candidates->filter(
             fn (Message $m) => collect($this->spec->match)->every(fn (Condition $c) => $c->evaluate($m)->passed)
@@ -50,8 +58,11 @@ final class ExpectEvaluator
                 ->get();
         }
 
+        // A truncated set can hide further matches, so "exactly" is only
+        // confirmed from a complete one. "at_least" needs no completeness
+        // guard — found matches are real, and more can only add to them.
         $countSatisfied = $this->spec->exactly !== null
-            ? $matched->count() === $this->spec->exactly
+            ? $setComplete && $matched->count() === $this->spec->exactly
             : $matched->count() >= $this->spec->atLeast;
 
         // Assertions must hold on every matched message.
@@ -76,6 +87,23 @@ final class ExpectEvaluator
             }
         }
 
+        // Extraction is part of the expectation: it runs once match, count
+        // and assertions all hold, against the first matched message, and an
+        // unmet non-optional extractor keeps the wait loop polling — a later
+        // message can still satisfy the whole request atomically.
+        $extractResults = null;
+        $extractionSatisfied = true;
+
+        if ($this->spec->extract !== null) {
+            if ($countSatisfied && $assertionsPassed && $matched->isNotEmpty()) {
+                $extractResults = $this->spec->extract->run($matched->first());
+                $extractionSatisfied = $this->spec->extract->satisfiedBy($extractResults);
+            } else {
+                $extractResults = $this->spec->extract->notEvaluated();
+                $extractionSatisfied = false;
+            }
+        }
+
         return new ExpectOutcome(
             spec: $this->spec,
             candidatesSeen: $candidatesSeen,
@@ -85,6 +113,8 @@ final class ExpectEvaluator
             assertionsPassed: $assertionsPassed,
             assertResults: $assertResults,
             assertionsFailedOn: $failedOn,
+            extractResults: $extractResults,
+            extractionSatisfied: $extractionSatisfied,
         );
     }
 
@@ -121,11 +151,17 @@ final class ExpectEvaluator
 
             $escaped = fn () => addcslashes((string) $condition->value, '\%_');
 
+            // The explicit ESCAPE binding makes the backslash-escaping above
+            // hold on every dialect: SQLite has no default LIKE escape
+            // character, so without it a literal % or _ in the value would
+            // stay a wildcard there while matching literally on MySQL.
+            $like = fn (string $pattern) => $query->whereRaw("{$column} like ? escape ?", [$pattern, '\\']);
+
             match ($condition->operator) {
                 'equals' => $query->where($column, $condition->value),
-                'contains' => $query->where($column, 'like', '%'.$escaped().'%'),
-                'starts_with' => $query->where($column, 'like', $escaped().'%'),
-                'ends_with' => $query->where($column, 'like', '%'.$escaped()),
+                'contains' => $like('%'.$escaped().'%'),
+                'starts_with' => $like($escaped().'%'),
+                'ends_with' => $like('%'.$escaped()),
                 default => null,
             };
         }

@@ -11,6 +11,7 @@ use Sendtrap\Core\Http\Resources\Mailtrap\SandboxMessageResource;
 use Sendtrap\Core\Http\Resources\Mailtrap\SandboxResource;
 use Sendtrap\Core\Models\Attachment;
 use Sendtrap\Core\Models\Message;
+use Sendtrap\Core\Storage\MessageDeleter;
 use Sendtrap\Core\Support\MessageStorage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -90,7 +91,7 @@ class MailtrapCompatController extends Controller
         $this->ensureOwned($request, $message);
 
         $sandboxSlug = $this->inbox($request)->smtp_username;
-        $message->delete();
+        app(MessageDeleter::class)->delete($message);
 
         return response()->json(
             (new SandboxMessageDetailResource($message, $sandboxSlug))->resolve()
@@ -181,7 +182,7 @@ class MailtrapCompatController extends Controller
     public function clean(Request $request, string $sandbox)
     {
         $inbox = $this->inbox($request);
-        $inbox->messages()->get()->each->delete();
+        app(MessageDeleter::class)->delete($inbox->messages()->get());
 
         return response()->json((new SandboxResource($this->withCounts($inbox)))->resolve());
     }

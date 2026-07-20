@@ -12,6 +12,7 @@ use Sendtrap\Core\Http\Resources\MessageResource;
 use Sendtrap\Core\Models\Attachment;
 use Sendtrap\Core\Models\Inbox;
 use Sendtrap\Core\Models\Message;
+use Sendtrap\Core\Storage\MessageDeleter;
 use Sendtrap\Core\Support\MessageStorage;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -262,7 +263,7 @@ class MessageController extends Controller
     {
         $this->ensureOwned($request, $message);
 
-        $message->delete();
+        app(MessageDeleter::class)->delete($message);
 
         return response()->json(['deleted' => true]);
     }
@@ -275,7 +276,9 @@ class MessageController extends Controller
      */
     public function destroyAll(Request $request)
     {
-        $deleted = $this->filteredMessages($this->inbox($request), $request)->get()->each->delete()->count();
+        $deleted = app(MessageDeleter::class)->delete(
+            $this->filteredMessages($this->inbox($request), $request)->get()
+        );
 
         return response()->json(['deleted' => $deleted]);
     }

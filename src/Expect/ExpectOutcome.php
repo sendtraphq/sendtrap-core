@@ -3,6 +3,8 @@
 namespace Sendtrap\Core\Expect;
 
 use Illuminate\Support\Collection;
+use Sendtrap\Core\Extract\ExtractionResult;
+use Sendtrap\Core\Extract\ExtractSpec;
 use Sendtrap\Core\Models\Message;
 
 /**
@@ -14,6 +16,7 @@ final class ExpectOutcome
      * @param  Collection<int, Message>  $candidates
      * @param  Collection<int, Message>  $matched
      * @param  list<ConditionResult>  $assertResults
+     * @param  array<string, ExtractionResult>|null  $extractResults
      */
     public function __construct(
         public readonly ExpectSpec $spec,
@@ -24,6 +27,8 @@ final class ExpectOutcome
         public readonly bool $assertionsPassed,
         public readonly array $assertResults,
         public readonly ?int $assertionsFailedOn,
+        public readonly ?array $extractResults = null,
+        public readonly bool $extractionSatisfied = true,
     ) {}
 
     /**
@@ -31,7 +36,7 @@ final class ExpectOutcome
      */
     public function satisfied(): bool
     {
-        return $this->countSatisfied && $this->assertionsPassed;
+        return $this->countSatisfied && $this->assertionsPassed && $this->extractionSatisfied;
     }
 
     public function status(): string
@@ -41,8 +46,20 @@ final class ExpectOutcome
             $this->candidatesSeen === 0 => 'no_candidates',
             $this->matched->isEmpty() => 'no_match',
             ! $this->countSatisfied => 'count_mismatch',
-            default => 'assertions_failed',
+            ! $this->assertionsPassed => 'assertions_failed',
+            default => 'extraction_failed',
         };
+    }
+
+    /**
+     * Per-extractor diagnostics for the response body — null when the
+     * request had no `extract` object.
+     *
+     * @return array<string, array<string, mixed>>|null
+     */
+    public function extractDiagnostics(): ?array
+    {
+        return $this->extractResults === null ? null : ExtractSpec::toDiagnostics($this->extractResults);
     }
 
     /**

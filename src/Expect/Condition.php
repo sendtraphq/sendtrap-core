@@ -4,6 +4,7 @@ namespace Sendtrap\Core\Expect;
 
 use InvalidArgumentException;
 use Sendtrap\Core\Models\Message;
+use Sendtrap\Core\Support\SafeRegex;
 
 /**
  * One validated condition: field, operator, value. Immutable; constructed
@@ -26,8 +27,6 @@ final class Condition
     ];
 
     private const MAX_VALUE_LENGTH = 1024;
-
-    private const MAX_REGEX_LENGTH = 256;
 
     private function __construct(
         public readonly FieldRef $field,
@@ -78,13 +77,7 @@ final class Condition
             }
 
             if ($op === 'matches') {
-                if (strlen($value) > self::MAX_REGEX_LENGTH) {
-                    throw new InvalidArgumentException('Regex patterns are capped at '.self::MAX_REGEX_LENGTH.' bytes.');
-                }
-
-                if (@preg_match(self::delimit($value), '') === false) {
-                    throw new InvalidArgumentException("\"{$value}\" is not a valid regular expression.");
-                }
+                SafeRegex::validate($value);
             }
         }
 
@@ -114,7 +107,7 @@ final class Condition
             'contains' => str_contains($subject, $this->value),
             'starts_with' => str_starts_with($subject, $this->value),
             'ends_with' => str_ends_with($subject, $this->value),
-            'matches' => (bool) @preg_match(self::delimit($this->value), $subject),
+            'matches' => (bool) @preg_match(SafeRegex::delimit($this->value), $subject),
             'exists' => true, // presence itself is checked by the caller
             default => false,
         };
@@ -131,15 +124,6 @@ final class Condition
             'exists' => true,
             default => false,
         };
-    }
-
-    /**
-     * The pattern is treated as a body and delimited here — user input
-     * never chooses delimiters or modifiers.
-     */
-    private static function delimit(string $pattern): string
-    {
-        return '~'.str_replace('~', '\~', $pattern).'~u';
     }
 
     /**

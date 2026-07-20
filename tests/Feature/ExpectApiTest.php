@@ -5,6 +5,7 @@ namespace Sendtrap\Core\Tests\Feature;
 use Closure;
 use Illuminate\Support\Facades\Storage;
 use Sendtrap\Core\Contracts\MessageWaiter;
+use Sendtrap\Core\Expect\ExpectEvaluator;
 use Sendtrap\Core\Jobs\ProcessIncomingMessage;
 use Sendtrap\Core\Models\Inbox;
 use Sendtrap\Core\Models\Message;
@@ -161,6 +162,103 @@ class ExpectApiTest extends PackageTestCase
             ->assertJsonPath('count.actual', 2);
     }
 
+    public function test_count_is_capped_at_the_candidate_cap(): void
+    {
+        $inbox = $this->makeInbox();
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'contains', 'value' => 'x']],
+            'count' => ['at_least' => ExpectEvaluator::CANDIDATE_CAP + 1],
+        ])->assertStatus(422);
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'contains', 'value' => 'x']],
+            'count' => ['exactly' => ExpectEvaluator::CANDIDATE_CAP + 1],
+        ])->assertStatus(422);
+    }
+
+    public function test_exactly_at_the_cap_is_not_confirmed_from_a_truncated_candidate_set(): void
+    {
+        $cap = ExpectEvaluator::CANDIDATE_CAP;
+        $inbox = $this->makeInbox();
+        Message::factory()->count($cap + 1)->for($inbox)->create(['test_id' => 'run-cap']);
+
+        // 51 matches truncated to a 50-message snapshot: "exactly 50" must
+        // not falsely pass just because the cap hid the 51st match...
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'test_id', 'op' => 'equals', 'value' => 'run-cap']],
+            'count' => ['exactly' => $cap],
+        ])
+            ->assertOk()
+            ->assertJsonPath('matched', false)
+            ->assertJsonPath('status', 'count_mismatch');
+
+        // ...while "at_least 50" is legitimately satisfied by the 50 found.
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'test_id', 'op' => 'equals', 'value' => 'run-cap']],
+            'count' => ['at_least' => $cap],
+        ])->assertOk()->assertJsonPath('matched', true);
+    }
+
+    public function test_exactly_at_the_cap_is_confirmed_when_the_prefilter_narrows_to_a_complete_set(): void
+    {
+        $cap = ExpectEvaluator::CANDIDATE_CAP;
+        $inbox = $this->makeInbox();
+        Message::factory()->count($cap)->for($inbox)->create(['test_id' => 'run-full']);
+        Message::factory()->for($inbox)->create(['test_id' => 'other']);
+
+        // Scope holds cap+1 messages, but the SQL prefilter narrows to
+        // exactly the cap — a complete set, so "exactly 50" must pass, not
+        // be rejected off the wider scope count.
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'test_id', 'op' => 'equals', 'value' => 'run-full']],
+            'count' => ['exactly' => $cap],
+        ])->assertOk()->assertJsonPath('matched', true)->assertJsonPath('count.actual', $cap);
+    }
+
+    public function test_boolean_options_reject_non_boolean_values(): void
+    {
+        $inbox = $this->makeInbox();
+        Message::factory()->for($inbox)->create(['subject' => 'Welcome']);
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'equals', 'value' => 'Welcome']],
+            'mark_read' => 'false',
+        ])->assertStatus(422);
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'equals', 'value' => 'Welcome']],
+            'scope' => ['unread_only' => 'false'],
+        ])->assertStatus(422);
+
+        // An explicit JSON null is a supplied non-boolean value, not an
+        // omitted key.
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'equals', 'value' => 'Welcome']],
+            'mark_read' => null,
+        ])->assertStatus(422);
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'equals', 'value' => 'Welcome']],
+            'scope' => ['unread_only' => null],
+        ])->assertStatus(422);
+    }
+
+    public function test_prefiltered_contains_matches_literal_percent_and_underscore(): void
+    {
+        $inbox = $this->makeInbox();
+        Message::factory()->for($inbox)->create(['subject' => 'Save 100% today']);
+        Message::factory()->for($inbox)->create(['subject' => 'Save 100 dollars today']);
+
+        // subject is SQL-prefiltered via LIKE: a literal % in the value must
+        // match literally on every dialect (SQLite included), not as a
+        // wildcard that lets the second message through.
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'contains', 'value' => '100%']],
+            'count' => ['exactly' => 1],
+        ])->assertOk()->assertJsonPath('matched', true)->assertJsonPath('count.actual', 1);
+    }
+
     public function test_scope_cursors_exclude_old_messages(): void
     {
         $inbox = $this->makeInbox();
@@ -276,5 +374,122 @@ class ExpectApiTest extends PackageTestCase
         $this->withToken($inbox->api_token)
             ->postJson('/api/v1/expect', ['match' => [['field' => 'subject', 'op' => 'exists']]])
             ->assertHeader('X-RateLimit-Limit', 15);
+    }
+
+    public function ingestVerificationMail(Inbox $inbox, string $code = '482913'): void
+    {
+        Storage::fake('local');
+        $raw = implode("\r\n", [
+            'From: Acme <no-reply@acme.example>',
+            'To: alice@example.com',
+            'Subject: Verify your account',
+            'MIME-Version: 1.0',
+            'Content-Type: text/plain; charset=utf-8',
+            '',
+            "Your verification code is {$code}.",
+            '',
+        ]);
+        (new ProcessIncomingMessage($inbox->id, $raw, 'no-reply@acme.example', ['alice@example.com']))->handle();
+    }
+
+    public function test_one_request_waits_matches_and_extracts_a_code(): void
+    {
+        $inbox = $this->makeInbox();
+        $this->ingestVerificationMail($inbox);
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'starts_with', 'value' => 'Verify']],
+            'extract' => ['code' => ['type' => 'code', 'near' => 'verification code']],
+        ])
+            ->assertOk()
+            ->assertJsonPath('matched', true)
+            ->assertJsonPath('status', 'matched')
+            ->assertJsonPath('extract.code.found', true)
+            ->assertJsonPath('extract.code.value', '482913');
+    }
+
+    public function test_an_unmet_extraction_is_its_own_status_and_fails_strict_mode(): void
+    {
+        $inbox = $this->makeInbox();
+        Message::factory()->for($inbox)->create(['subject' => 'Verify your account']);
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'starts_with', 'value' => 'Verify']],
+            'extract' => ['code' => ['type' => 'code']],
+        ])
+            ->assertOk()
+            ->assertJsonPath('matched', false)
+            ->assertJsonPath('status', 'extraction_failed')
+            ->assertJsonPath('extract.code.status', 'not_found');
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'starts_with', 'value' => 'Verify']],
+            'extract' => ['code' => ['type' => 'code']],
+            'mode' => 'strict',
+        ])->assertStatus(422)->assertJsonPath('status', 'extraction_failed');
+
+        // An optional extractor's miss doesn't unsettle the expectation.
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'starts_with', 'value' => 'Verify']],
+            'extract' => ['code' => ['type' => 'code', 'optional' => true]],
+        ])
+            ->assertOk()
+            ->assertJsonPath('matched', true)
+            ->assertJsonPath('status', 'matched')
+            ->assertJsonPath('extract.code.status', 'not_found');
+    }
+
+    public function test_extraction_stays_unevaluated_until_a_message_matches(): void
+    {
+        $inbox = $this->makeInbox();
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'contains', 'value' => 'Verify']],
+            'extract' => ['code' => ['type' => 'code']],
+        ])
+            ->assertOk()
+            ->assertJsonPath('status', 'no_candidates')
+            ->assertJsonPath('extract.code.status', 'not_evaluated')
+            ->assertJsonPath('extract.code.found', false);
+    }
+
+    public function test_a_code_arriving_mid_wait_satisfies_match_and_extraction_atomically(): void
+    {
+        $inbox = $this->makeInbox();
+
+        $this->app->bind(MessageWaiter::class, fn () => new class($this, $inbox) implements MessageWaiter
+        {
+            public function __construct(private ExpectApiTest $test, private Inbox $inbox) {}
+
+            public function wait(int $timeoutMs, Closure $poll): bool
+            {
+                $this->test->ingestVerificationMail($this->inbox, '660312');
+
+                return $poll();
+            }
+        });
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'starts_with', 'value' => 'Verify']],
+            'extract' => ['code' => ['type' => 'code', 'near' => 'verification code']],
+            'wait' => ['timeout_ms' => 5000],
+        ])
+            ->assertOk()
+            ->assertJsonPath('matched', true)
+            ->assertJsonPath('extract.code.value', '660312');
+    }
+
+    public function test_an_invalid_extract_spec_is_rejected_up_front(): void
+    {
+        $inbox = $this->makeInbox();
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'exists']],
+            'extract' => ['code' => ['type' => 'psychic']],
+        ])->assertStatus(422);
+
+        $this->expectJson($inbox, [
+            'match' => [['field' => 'subject', 'op' => 'exists']],
+        ])->assertOk()->assertJsonPath('extract', null);
     }
 }

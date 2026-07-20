@@ -446,11 +446,19 @@ paths:
         expectation — count requirement **and** assertions — is satisfied.
         Rate-limited by the `inbox-api-wait` limiter (15/min).
 
+        An optional `extract` object (same named extractors as
+        `POST /messages/{messageId}/extract`) makes matching and extraction
+        atomic: extractors run against the first matched message once the
+        count requirement and assertions hold, results ride on the response
+        under `extract`, and a non-optional miss keeps the wait loop polling
+        and reports `extraction_failed` — so "wait for the signup mail and
+        give me the six-digit code" is one request.
+
         `mode: strict` returns **422** with the same diagnostic body when the
         expectation is unmet, so plain HTTP-error handling fails a CI step.
         Requests are validated before any message parsing; caps: 20
-        conditions per list, 1 KiB values, 256-byte regexes, 50 candidates
-        evaluated per pass.
+        conditions per list, 10 extractors, 1 KiB values, 256-byte regexes,
+        50 candidates evaluated per pass.
       requestBody:
         required: true
         content:
@@ -468,6 +476,17 @@ paths:
                     - { field: links, op: matches, value: 'example\.com/verify\?code=\d+' }
                     - { field: attachments.count, op: equals, value: 0 }
                   scope: { test_id: run-42 }
+                  wait: { timeout_ms: 10000 }
+                  mode: strict
+              verification-code:
+                summary: Wait for the signup mail and extract code + link in one request
+                value:
+                  match:
+                    - { field: to, op: contains, value: alice@example.com }
+                    - { field: subject, op: contains, value: Verify }
+                  extract:
+                    code: { type: code, near: verification code }
+                    verify_link: { type: link, path_prefix: /verify }
                   wait: { timeout_ms: 10000 }
                   mode: strict
       responses:
@@ -494,6 +513,100 @@ paths:
           $ref: '#/components/responses/Unauthorized'
         '403':
           $ref: '#/components/responses/IpForbidden'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+
+  /v1/messages/{messageId}/extract:
+    parameters:
+      - $ref: '#/components/parameters/messageId'
+    post:
+      operationId: extractFromMessage
+      tags: [Testing]
+      summary: Extract values from a message
+      description: |
+        Deterministic, named extraction from a known message — no custom
+        email parsing in the test suite, no waiting (pair with `/expect` for
+        the atomic wait-and-extract form). Each named extractor returns a
+        typed value with an explicit `found` state, the source field it
+        searched, bounded context, and `ambiguous` diagnostics instead of a
+        silent guess. Nothing is ever fetched; bodies and attachment bytes
+        are never echoed back.
+
+        Extractor types:
+        - `regex` — bounded regex capture from `text`, `html` (raw source),
+          `subject` or `header.<Name>` (default `text`). The first capture
+          group's value is extracted, else the whole match.
+        - `code` — verification-code helper: a standalone token of `length`
+          (4–12, default 6) characters from `charset` (`digits` default,
+          `letters`, `upper`, `alphanumeric`), never fished out of a longer
+          run. Searches visible text (`from: auto` prefers the text part,
+          falling back to tag-stripped HTML). `near` anchors the search to a
+          phrase ("verification code"); the token nearest the anchor wins,
+          equally-near distinct tokens stay ambiguous.
+        - `link` — select a link by exact `url`, `host`, `path_prefix`,
+          `query_param` (name or `{name, value}`), visible `text_contains`,
+          or a `matches` regex on the URL; criteria AND together. Links come
+          from a tolerant HTML parse of the body; relative URLs stay
+          relative unless the message declares a valid absolute
+          `<base href>`. Value is `{url, text}` — returned, never fetched.
+        - `address` — `{address, name}` from `from`, `to`, `cc`,
+          `envelope_from` or `envelope_to` (the envelope catches BCC-only
+          recipients), optionally filtered by a `matches` regex on the
+          address.
+        - `attachment` — metadata (`id`, `filename`, `content_type`, `size`,
+          `checksum`) plus the authenticated download URL, selected by exact
+          `filename`, `filename_contains`, a `matches` regex on the
+          filename, or `content_type` (a `/*` wildcard subtype matches the
+          whole type family).
+
+        Every extractor also takes `select` (`first` | `last` | `all`) —
+        without it, several distinct matches return `status: ambiguous` with
+        a candidate list — and `optional: true`, which keeps a miss from
+        failing `found_all` and strict mode. Caps: 10 extractors per
+        request, 256-byte regexes (server-delimited, user input never
+        chooses modifiers), 1 KiB option values.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractRequest'
+            examples:
+              signup-email:
+                summary: Code, verification link and invoice from one message
+                value:
+                  extract:
+                    code: { type: code, near: verification code }
+                    verify_link: { type: link, host: app.example.com, path_prefix: /verify }
+                    invoice: { type: attachment, content_type: application/pdf }
+                  mode: strict
+      responses:
+        '200':
+          description: |
+            Report-mode result (any outcome, including misses), or a
+            strict-mode success.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractResult'
+        '422':
+          description: |
+            Invalid request (unknown extractor type or option, bad regex,
+            cap exceeded — body is the common error envelope with a
+            `request_id`), or a strict-mode miss (body is the full
+            `ExtractResult`).
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/Error'
+                  - $ref: '#/components/schemas/ExtractResult'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/IpForbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
         '429':
           $ref: '#/components/responses/TooManyRequests'
 
@@ -1615,16 +1728,19 @@ components:
               description: Server-side wait budget in milliseconds, clamped to the server ceiling.
         count:
           type: object
-          description: '`at_least` (default 1) and `exactly` are mutually exclusive.'
+          description: >-
+            `at_least` (default 1) and `exactly` are mutually exclusive. The
+            maximum matches the evaluator's per-snapshot candidate cap (50
+            messages) — larger requirements could never be verified.
           properties:
             at_least:
               type: integer
               minimum: 1
-              maximum: 100
+              maximum: 50
             exactly:
               type: integer
               minimum: 1
-              maximum: 100
+              maximum: 50
         sort:
           type: string
           enum: [newest, oldest]
@@ -1638,23 +1754,38 @@ components:
           type: string
           enum: [report, strict]
           default: report
+        extract:
+          type: object
+          maxProperties: 10
+          description: |
+            Named extractors (see `POST /messages/{messageId}/extract`),
+            evaluated atomically with the expectation: they run against the
+            first matched message once the count requirement and assertions
+            hold. A non-optional extractor that misses keeps the wait loop
+            polling and reports `extraction_failed`.
+          additionalProperties:
+            $ref: '#/components/schemas/ExtractorDefinition'
 
     ExpectResult:
       type: object
-      required: [matched, status, elapsed_ms, candidates_seen, count, messages, conditions, request_id]
+      required: [matched, status, elapsed_ms, candidates_seen, count, messages, conditions, extract, request_id]
       properties:
         matched:
           type: boolean
-          description: True only when the count requirement and every assertion are satisfied.
+          description: |
+            True only when the count requirement, every assertion and every
+            non-optional extractor are satisfied.
         status:
           type: string
-          enum: [matched, no_candidates, no_match, count_mismatch, assertions_failed]
+          enum: [matched, no_candidates, no_match, count_mismatch, assertions_failed, extraction_failed]
           description: |
             `no_candidates`: nothing in scope arrived. `no_match`: scoped
             mail arrived but none passed the match conditions (diagnosed
             against the newest scoped message). `count_mismatch`: matches
             arrived but not the required number. `assertions_failed`: the
             expected mail arrived with the wrong content.
+            `extraction_failed`: the expected mail arrived but a
+            non-optional extractor found nothing (or an ambiguous value).
         elapsed_ms:
           type: integer
         candidates_seen:
@@ -1696,6 +1827,163 @@ components:
         assertions_failed_on:
           type: [integer, 'null']
           description: Id of the first matched message an assertion failed on.
+        extract:
+          type: [object, 'null']
+          description: |
+            Per-extractor results when the request had an `extract` object
+            (each entry stays `status: not_evaluated` until a message
+            matches); `null` when it did not.
+          additionalProperties:
+            $ref: '#/components/schemas/ExtractionResult'
+        request_id:
+          type: string
+          format: uuid
+
+    ExtractorDefinition:
+      type: object
+      required: [type]
+      description: |
+        One named extractor. Applicable options depend on `type` — unknown
+        options for the type are rejected. See the
+        `POST /messages/{messageId}/extract` description for the full
+        per-type semantics.
+      properties:
+        type:
+          type: string
+          enum: [regex, code, link, address, attachment]
+        select:
+          type: string
+          enum: [first, last, all]
+          description: |
+            Which match to take when several distinct values exist. Without
+            it, one match is returned directly and several are `ambiguous`
+            — the server never guesses. For `code` with `near`, matches are
+            ordered nearest-first.
+        optional:
+          type: boolean
+          default: false
+          description: A miss does not fail `found_all`, strict mode, or a surrounding `/expect`.
+        pattern:
+          type: string
+          maxLength: 256
+          description: '`regex` only (required): the regex body — delimiters and modifiers are server-controlled.'
+        from:
+          type: string
+          description: |
+            Source field. `regex`: `text` (default), `html`, `subject` or
+            `header.<Name>`. `code`: `auto` (default), `text`, `html`,
+            `subject`.
+        length:
+          type: integer
+          minimum: 4
+          maximum: 12
+          default: 6
+          description: '`code` only: token length.'
+        charset:
+          type: string
+          enum: [digits, letters, upper, alphanumeric]
+          default: digits
+          description: '`code` only: token character class.'
+        near:
+          type: string
+          maxLength: 128
+          description: '`code` only: anchor phrase; the nearest token wins.'
+        url:
+          type: string
+          description: '`link` only: exact URL.'
+        host:
+          type: string
+          description: '`link` only: exact host, case-insensitive.'
+        path_prefix:
+          type: string
+          description: '`link` only: URL path prefix.'
+        query_param:
+          description: '`link` only: a query parameter name, or `{name, value}`.'
+        text_contains:
+          type: string
+          description: '`link` only: substring of the visible anchor text, case-insensitive.'
+        matches:
+          type: string
+          maxLength: 256
+          description: '`link`/`address`/`attachment`: regex on the URL / address / filename.'
+        field:
+          type: string
+          enum: [from, to, cc, envelope_from, envelope_to]
+          description: '`address` only (required): which address field.'
+        filename:
+          type: string
+          description: '`attachment` only: exact filename.'
+        filename_contains:
+          type: string
+          description: '`attachment` only: filename substring, case-insensitive.'
+        content_type:
+          type: string
+          description: '`attachment` only: media type, `/*` wildcard subtype allowed.'
+
+    ExtractionResult:
+      type: object
+      required: [found, status, value, matches, source, context, candidates]
+      properties:
+        found:
+          type: boolean
+        status:
+          type: string
+          enum: [found, not_found, ambiguous, not_evaluated]
+          description: |
+            `ambiguous`: several distinct values matched and no `select` was
+            given — candidates are listed instead of guessed among.
+            `not_evaluated`: the surrounding `/expect` never reached
+            extraction (no message matched yet).
+        value:
+          description: |
+            The typed extracted value — string for `regex`/`code`,
+            `{url, text}` for `link`, `{address, name}` for `address`, and
+            `{id, filename, content_type, size, checksum, url}` (with an
+            authenticated download URL) for `attachment`. An array of those
+            with `select: all`. `null` unless found.
+        matches:
+          type: integer
+          description: Distinct candidate values the extractor saw.
+        source:
+          type: [string, 'null']
+          description: |
+            The field that was searched — e.g. `text`, `html`, `subject`,
+            `header.<Name>`, `links`, an address field, or `attachments`.
+        context:
+          type: [string, 'null']
+          description: A bounded excerpt around the match — never a whole body.
+        candidates:
+          type: [array, 'null']
+          description: Truncated candidate values (first 5) when `ambiguous`.
+
+    ExtractRequest:
+      type: object
+      required: [extract]
+      properties:
+        extract:
+          type: object
+          maxProperties: 10
+          description: 'Named extractors; names match `[A-Za-z0-9_][A-Za-z0-9_.-]{0,63}`.'
+          additionalProperties:
+            $ref: '#/components/schemas/ExtractorDefinition'
+        mode:
+          type: string
+          enum: [report, strict]
+          default: report
+
+    ExtractResult:
+      type: object
+      required: [message_id, found_all, extract, request_id]
+      properties:
+        message_id:
+          type: integer
+        found_all:
+          type: boolean
+          description: True when every non-optional extractor found its value.
+        extract:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/ExtractionResult'
         request_id:
           type: string
           format: uuid

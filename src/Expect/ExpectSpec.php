@@ -4,6 +4,7 @@ namespace Sendtrap\Core\Expect;
 
 use Carbon\CarbonImmutable;
 use InvalidArgumentException;
+use Sendtrap\Core\Extract\ExtractSpec;
 
 /**
  * The fully-validated /expect request. Construction is the only place
@@ -32,6 +33,7 @@ final class ExpectSpec
         public readonly string $sort,
         public readonly bool $markRead,
         public readonly bool $strict,
+        public readonly ?ExtractSpec $extract,
     ) {}
 
     /**
@@ -71,9 +73,13 @@ final class ExpectSpec
             throw new InvalidArgumentException('"count.at_least" and "count.exactly" are mutually exclusive.');
         }
 
+        // Counts are capped at the evaluator's candidate cap: it never loads
+        // more than CANDIDATE_CAP messages, so a larger requirement could
+        // never be verified (and "exactly" could falsely pass on a truncated
+        // set).
         foreach ([['count.at_least', $atLeast], ['count.exactly', $exactly]] as [$key, $v]) {
-            if ($v !== null && (! is_int($v) || $v < 1 || $v > 100)) {
-                throw new InvalidArgumentException("\"{$key}\" must be an integer between 1 and 100.");
+            if ($v !== null && (! is_int($v) || $v < 1 || $v > ExpectEvaluator::CANDIDATE_CAP)) {
+                throw new InvalidArgumentException("\"{$key}\" must be an integer between 1 and ".ExpectEvaluator::CANDIDATE_CAP.'.');
             }
         }
 
@@ -96,13 +102,14 @@ final class ExpectSpec
             receivedAfter: self::optionalDate($scope, 'received_after'),
             receivedBefore: self::optionalDate($scope, 'received_before'),
             afterMessageId: self::optionalInt($scope, 'after_message_id'),
-            unreadOnly: (bool) ($scope['unread_only'] ?? false),
+            unreadOnly: self::optionalBool($scope, 'unread_only', 'scope.unread_only'),
             timeoutMs: min($timeoutMs, $maxTimeoutMs),
             atLeast: $exactly === null ? ($atLeast ?? 1) : null,
             exactly: $exactly,
             sort: $sort,
-            markRead: (bool) ($input['mark_read'] ?? false),
+            markRead: self::optionalBool($input, 'mark_read', 'mark_read'),
             strict: $mode === 'strict',
+            extract: isset($input['extract']) ? ExtractSpec::fromArray($input['extract']) : null,
         );
     }
 
@@ -142,6 +149,24 @@ final class ExpectSpec
         }
 
         return $v;
+    }
+
+    /**
+     * A missing key is false; anything present — an explicit JSON null
+     * included — must be a real boolean. Casting would turn "false" (any
+     * non-empty string) into true.
+     */
+    private static function optionalBool(array $section, string $key, string $label): bool
+    {
+        if (! array_key_exists($key, $section)) {
+            return false;
+        }
+
+        if (! is_bool($section[$key])) {
+            throw new InvalidArgumentException("\"{$label}\" must be a boolean.");
+        }
+
+        return $section[$key];
     }
 
     private static function optionalInt(array $scope, string $key): ?int

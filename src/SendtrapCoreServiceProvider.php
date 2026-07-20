@@ -12,12 +12,14 @@ use Sendtrap\Core\Console\Commands\SmtpServer;
 use Sendtrap\Core\Console\Commands\SyncCaniemailData;
 use Sendtrap\Core\Contracts\LegacyOwnershipFallback;
 use Sendtrap\Core\Contracts\MessageWaiter;
+use Sendtrap\Core\Contracts\StorageQuota;
 use Sendtrap\Core\Models\Inbox;
 use Sendtrap\Core\Models\Message;
 use Sendtrap\Core\Models\Project;
 use Sendtrap\Core\Policies\InboxPolicy;
 use Sendtrap\Core\Policies\MessagePolicy;
 use Sendtrap\Core\Policies\ProjectPolicy;
+use Sendtrap\Core\Storage\UsageMeterStorageQuota;
 use Sendtrap\Core\Support\NullLegacyOwnershipFallback;
 use Sendtrap\Core\Support\PollingMessageWaiter;
 
@@ -112,6 +114,13 @@ class SendtrapCoreServiceProvider extends ServiceProvider
         // host can swap in a notification-backed waiter (Plan 10) without a
         // public API change.
         $this->app->bindIf(MessageWaiter::class, PollingMessageWaiter::class);
+
+        // Plan 01a: storage-quota admission/accounting. The package default
+        // is a compatibility shim over the host's UsageMeter binding —
+        // pre-01a behavior, byte for byte — so hosts without an atomic
+        // implementation (Community today) keep working unchanged. bindIf so
+        // a host binding (Cloud's Redis state machine) wins when present.
+        $this->app->bindIf(StorageQuota::class, UsageMeterStorageQuota::class);
     }
 
     /**

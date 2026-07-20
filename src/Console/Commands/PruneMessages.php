@@ -11,6 +11,7 @@ use Sendtrap\Core\Exceptions\UnresolvedWorkspaceOwnerException;
 use Sendtrap\Core\Models\Attachment;
 use Sendtrap\Core\Models\Message;
 use Sendtrap\Core\Models\Project;
+use Sendtrap\Core\Storage\MessageDeleter;
 use Sendtrap\Core\Support\MessageStorage;
 use Throwable;
 
@@ -105,11 +106,17 @@ class PruneMessages extends Command
                 Message::whereHas('inbox.project', fn ($q) => $q->where('workspace_id', $workspace->id()))
                     ->where('received_at', '<', $cutoff)
                     ->chunkById(200, function ($messages) use (&$deleted, $dryRun) {
-                        $deleted += $messages->count();
+                        if ($dryRun) {
+                            $deleted += $messages->count();
 
-                        if (! $dryRun) {
-                            $messages->each->delete();
+                            return;
                         }
+
+                        // MessageDeleter (Plan 01a): each pruned chunk's
+                        // exact byte total feeds the storage-quota counter,
+                        // so freed headroom is visible without waiting for
+                        // a reconciliation window.
+                        $deleted += app(MessageDeleter::class)->delete($messages);
                     });
             } catch (UnresolvedWorkspaceOwnerException) {
                 Log::warning('prune.orphan_workspace_skipped', ['workspace_id' => $workspace->id()]);

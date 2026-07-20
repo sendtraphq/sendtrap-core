@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Sendtrap\Core\Http\Controllers\Api\ExpectController;
+use Sendtrap\Core\Http\Controllers\Api\ExtractController;
 use Sendtrap\Core\Http\Controllers\Api\InboxController;
 use Sendtrap\Core\Http\Controllers\Api\MailtrapCompatController;
 use Sendtrap\Core\Http\Controllers\Api\MessageController;
@@ -32,6 +33,7 @@ Route::middleware([AuthenticateInboxToken::class, 'throttle:inbox-api'])->withou
     Route::post('/expect', ExpectController::class)->middleware('throttle:inbox-api-wait');
     Route::delete('/messages', [MessageController::class, 'destroyAll']);
     Route::get('/messages/{message}', [MessageController::class, 'show']);
+    Route::post('/messages/{message}/extract', ExtractController::class)->name('api.messages.extract');
     Route::get('/messages/{message}/raw', [MessageController::class, 'raw'])->name('api.messages.raw');
     Route::get('/messages/{message}/html', [MessageController::class, 'html'])->name('api.messages.html');
     Route::get('/messages/{message}/compatibility', [MessageController::class, 'compatibility'])->name('api.messages.compatibility');

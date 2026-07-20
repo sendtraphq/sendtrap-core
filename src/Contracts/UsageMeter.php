@@ -54,6 +54,14 @@ interface UsageMeter
      * Whether accepting `$incomingBytes` more would push the workspace
      * over its storage limit. Always false when the workspace has no
      * storage limit.
+     *
+     * @deprecated Plan 01a: implementations historically also *counted* the
+     * accepted bytes as a side effect of this check — a non-atomic
+     * read-modify-write that loses updates under concurrent workers.
+     * Admission decisions belong on the StorageQuota contract's
+     * reserve/commit/release lifecycle; ingestion no longer calls this.
+     * Retained (and still answered) for UI/reporting callers until the next
+     * major release.
      */
     public function wouldExceedStorage(Workspace $workspace, int $incomingBytes): bool;
 }

@@ -16,8 +16,13 @@ built on.
 - **Domain** — `Workspace` → `Project` → `Inbox` → `Message`/`Attachment`
   Eloquent models, factories, and an append-only migration set.
 - **Token API** — a bearer-token REST API per inbox (list/filter messages,
-  detail JSON, raw/HTML views, attachments, server-side wait/assert, filtered
-  bulk delete), with rate limiting hooks. The full surface is documented by an
+  detail JSON, raw/HTML views, attachments, filtered bulk delete), with rate
+  limiting hooks. `/expect` is the testing endpoint: one deterministic request
+  that waits for mail, evaluates match conditions, applies assertions and
+  answers with machine-readable diagnostics; named extractors — on `/expect`
+  or `POST /messages/{id}/extract` — pull verification codes, links,
+  addresses and attachment metadata out of a message server-side, with
+  explicit found/ambiguous states instead of guesses. The full surface is documented by an
   OpenAPI 3.1 contract shipped in this package at
   [`openapi/sendtrap.yaml`](openapi/sendtrap.yaml) (JSON twin and a Postman
   collection alongside; regenerate with `openapi/generate.sh`). Hosts serve it
@@ -82,12 +87,13 @@ The HTML compatibility check scores markup against the
 
 ## Developing against unreleased core
 
-`main` carries the branch alias `dev-main as 0.1.x-dev`, so a consuming
-application can require unreleased core while still satisfying a `^0.1`
-constraint:
+`main` carries a branch alias for the current release minor (see
+`extra.branch-alias` in this repository's `composer.json`), so a consuming
+application can require unreleased core while still satisfying its caret
+constraint — with the alias at `0.5.x-dev`, for example:
 
 ```json
-{ "require": { "sendtrap/core": "dev-main as 0.1.x-dev" } }
+{ "require": { "sendtrap/core": "dev-main as 0.5.x-dev" } }
 ```
 
 ## Versioning and support

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Sendtrap\Core\Database\Factories\ProjectFactory;
+use Sendtrap\Core\Storage\MessageDeleter;
 
 /**
  * Core's Project has no Team
@@ -52,10 +53,11 @@ class Project extends Model
         });
 
         static::deleting(function (Project $project) {
-            // Delete messages via Eloquent (not the DB cascade) so
-            // Message::booted()'s deleting hook cleans up on-disk files.
+            // Delete messages via MessageDeleter (not the DB cascade) so
+            // Message::booted()'s deleting hook cleans up on-disk files AND
+            // the freed bytes feed the storage-quota counter (Plan 01a).
             $project->inboxes()->get()->each(function (Inbox $inbox) {
-                $inbox->messages()->get()->each->delete();
+                app(MessageDeleter::class)->delete($inbox->messages()->get());
             });
         });
     }

@@ -10,13 +10,16 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Sendtrap\Core\Contracts\LegacyOwnershipFallback;
+use Sendtrap\Core\Contracts\StorageQuota;
 use Sendtrap\Core\Contracts\UsageMeter;
 use Sendtrap\Core\Events\MessageReceived;
 use Sendtrap\Core\Exceptions\UnresolvedWorkspaceOwnerException;
 use Sendtrap\Core\Models\Inbox;
 use Sendtrap\Core\Models\Message;
+use Sendtrap\Core\Storage\StorageReservation;
 use Sendtrap\Core\Support\MergeTagDetector;
 use Sendtrap\Core\Support\MessageStorage;
+use Throwable;
 use ZBateson\MailMimeParser\Header\AddressHeader;
 use ZBateson\MailMimeParser\Message as MimeMessage;
 
@@ -49,7 +52,9 @@ class ProcessIncomingMessage implements ShouldQueue
         $parsed = MimeMessage::from($this->raw, true);
         $incomingBytes = $this->storedSize($parsed);
 
-        // Storage quota via UsageMeter with the real Workspace. The fallback
+        // Storage quota via StorageQuota with the real Workspace (Plan 01a:
+        // an atomic reserve, no longer UsageMeter::wouldExceedStorage()'s
+        // read-modify-write). The fallback
         // trigger is DERIVED, never configured (§3.3/§3.4 gate × flag
         // matrix): a null workspace (project not yet backfilled), or a
         // workspace whose concrete owner the host adapter cannot resolve
@@ -59,17 +64,39 @@ class ProcessIncomingMessage implements ShouldQueue
         // default — today's behavior) versus fail loud (false — the job
         // throws and lands in failed_jobs: visible, alertable, retryable;
         // the check is never silently skipped, §5.0.1 row 5 / N-1).
+        // A quota-backend failure (e.g. Redis down) deliberately propagates:
+        // the job fails retryably and stays visible to queue operations —
+        // never a silent "allowed" or "over quota".
         $workspace = $inbox->project?->workspace;
         $fallback = app(LegacyOwnershipFallback::class);
+        $quota = app(StorageQuota::class);
         $usesFallback = false;
+        $reservation = null;
 
         if ($workspace) {
             try {
-                if (app(UsageMeter::class)->wouldExceedStorage($workspace, $incomingBytes)) {
-                    return; // workspace is over (or this message would push it over) its plan's storage quota; drop the message
-                }
+                $reservation = $quota->reserve($workspace, $incomingBytes);
             } catch (UnresolvedWorkspaceOwnerException) {
                 $workspace = null; // resolved but orphaned: fall through to the fallback path below
+            }
+        }
+
+        if ($workspace) {
+            if ($reservation->shouldRetry()) {
+                // Admission is paused behind a reconciliation barrier (or
+                // first-touch initialization). Requeue rather than drop —
+                // the pause is one aggregate-query round; queueing absorbs
+                // it. A fresh dispatch (not release()) so a worker
+                // configured with --tries=1 doesn't fail the job for being
+                // released once.
+                static::dispatch($this->inboxId, $this->raw, $this->envelopeFrom, $this->envelopeTo)
+                    ->delay(now()->addSeconds(2));
+
+                return;
+            }
+
+            if ($reservation->isBlocked()) {
+                return; // workspace is over (or this message would push it over) its plan's storage quota; drop the message
             }
         }
 
@@ -94,50 +121,89 @@ class ProcessIncomingMessage implements ShouldQueue
             }
         }
 
-        // Persist the raw RFC822 source to disk.
-        $rawPath = 'messages/'.Str::uuid()->toString().'.eml';
+        // Plan 01a explicit lifecycle: everything between here and the
+        // commit runs under the reservation — any ordinary early return or
+        // exception releases it in the finally, so a failed attempt never
+        // stays charged. Post-persistence side effects (broadcast, forward,
+        // webhook) stay OUTSIDE the guarded section: their failures must not
+        // release bytes belonging to an already-stored message.
+        $committed = false;
 
-        if (! MessageStorage::disk()->put($rawPath, $this->raw)) {
-            Log::error('message.store_failed: could not write raw message to storage', [
-                'inbox_id' => $inbox->id,
-                'path' => $rawPath,
+        try {
+            // Persist the raw RFC822 source to disk.
+            $rawPath = 'messages/'.Str::uuid()->toString().'.eml';
+
+            if (! MessageStorage::disk()->put($rawPath, $this->raw)) {
+                Log::error('message.store_failed: could not write raw message to storage', [
+                    'inbox_id' => $inbox->id,
+                    'path' => $rawPath,
+                ]);
+
+                return;
+            }
+
+            $from = $this->firstAddress($parsed->getHeader('From'));
+            $html = $parsed->getHtmlContent();
+            $text = $parsed->getTextContent();
+            $mergeTags = MergeTagDetector::detect($html, $text);
+
+            $message = $inbox->messages()->create([
+                'message_id' => trim((string) $parsed->getHeaderValue('Message-ID'), '<> ') ?: null,
+                'test_id' => trim((string) $parsed->getHeaderValue('X-Sendtrap-Test-Id')) ?: null,
+                'envelope_from' => $this->envelopeFrom,
+                'envelope_to' => $this->envelopeTo,
+                'from_address' => $from['address'] ?? null,
+                'from_name' => $from['name'] ?? null,
+                'to' => $this->addressList($parsed->getHeader('To')),
+                'cc' => $this->addressList($parsed->getHeader('Cc')),
+                'subject' => $parsed->getHeaderValue('Subject'),
+                'size' => strlen($this->raw),
+                'has_html' => $html !== null && $html !== '',
+                'has_text' => $text !== null && $text !== '',
+                'has_attachments' => false,
+                'has_unresolved_merge_tags' => $mergeTags['has_unresolved_merge_tags'],
+                'unresolved_merge_tags' => $mergeTags['unresolved_merge_tags'],
+                'raw_path' => $rawPath,
+                'received_at' => now(),
             ]);
 
-            return;
+            $storedAttachmentBytes = $this->storeAttachments($parsed, $message);
+
+            if ($message->attachments()->exists()) {
+                $message->update(['has_attachments' => true]);
+            }
+
+            // Retention runs inside the reservation window so its exact
+            // removed bytes fold into the same commit — one reserve/commit
+            // script pair per accepted message, no extra round trips.
+            $removedBytes = $this->enforceRetention($inbox);
+
+            // Finalize with the bytes actually persisted: the raw source
+            // plus only the attachments that stored successfully — a failed
+            // attachment write must not leave its prospective size charged.
+            $this->commitReservation(
+                $quota,
+                $reservation,
+                strlen($this->raw) + $storedAttachmentBytes,
+                $removedBytes,
+            );
+
+            $committed = true;
+        } finally {
+            if (! $committed && $reservation?->accountable()) {
+                try {
+                    $quota->release($reservation);
+                } catch (Throwable $e) {
+                    // Release itself failed (quota backend down mid-crash):
+                    // the operation token expires into reconciliation, which
+                    // reinstalls the database truth before admission reopens.
+                    Log::error('storage_quota.release_failed: reservation left to expire into reconciliation', [
+                        'inbox_id' => $inbox->id,
+                        'error' => $e->getMessage(),
+                    ]);
+                }
+            }
         }
-
-        $from = $this->firstAddress($parsed->getHeader('From'));
-        $html = $parsed->getHtmlContent();
-        $text = $parsed->getTextContent();
-        $mergeTags = MergeTagDetector::detect($html, $text);
-
-        $message = $inbox->messages()->create([
-            'message_id' => trim((string) $parsed->getHeaderValue('Message-ID'), '<> ') ?: null,
-            'test_id' => trim((string) $parsed->getHeaderValue('X-Sendtrap-Test-Id')) ?: null,
-            'envelope_from' => $this->envelopeFrom,
-            'envelope_to' => $this->envelopeTo,
-            'from_address' => $from['address'] ?? null,
-            'from_name' => $from['name'] ?? null,
-            'to' => $this->addressList($parsed->getHeader('To')),
-            'cc' => $this->addressList($parsed->getHeader('Cc')),
-            'subject' => $parsed->getHeaderValue('Subject'),
-            'size' => strlen($this->raw),
-            'has_html' => $html !== null && $html !== '',
-            'has_text' => $text !== null && $text !== '',
-            'has_attachments' => false,
-            'has_unresolved_merge_tags' => $mergeTags['has_unresolved_merge_tags'],
-            'unresolved_merge_tags' => $mergeTags['unresolved_merge_tags'],
-            'raw_path' => $rawPath,
-            'received_at' => now(),
-        ]);
-
-        $hasAttachments = $this->storeAttachments($parsed, $message);
-
-        if ($hasAttachments) {
-            $message->update(['has_attachments' => true]);
-        }
-
-        $this->enforceRetention($inbox);
 
         MessageReceived::dispatch($message);
 
@@ -165,11 +231,38 @@ class ProcessIncomingMessage implements ShouldQueue
     }
 
     /**
-     * Persist all attachment parts to disk and create Attachment rows.
+     * Finalize the reservation with the net stored delta. The message IS
+     * persisted by this point, so a quota-backend failure here must not
+     * fail the job (a retry would store the message twice) and must not
+     * fall through to release() — the untouched operation token expires
+     * into reconciliation instead, which bounds the drift.
      */
-    protected function storeAttachments(MimeMessage $parsed, Message $message): bool
+    protected function commitReservation(StorageQuota $quota, ?StorageReservation $reservation, int $storedBytes, int $removedBytes): void
     {
-        $stored = false;
+        if (! $reservation?->accountable()) {
+            return;
+        }
+
+        try {
+            $quota->commit($reservation, $storedBytes, $removedBytes);
+        } catch (Throwable $e) {
+            Log::error('storage_quota.commit_failed: reservation left to expire into reconciliation', [
+                'stored_bytes' => $storedBytes,
+                'removed_bytes' => $removedBytes,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Persist all attachment parts to disk and create Attachment rows.
+     * Returns the byte total of the attachments that actually stored — a
+     * failed write is skipped (logged) and must not stay charged against
+     * the storage reservation.
+     */
+    protected function storeAttachments(MimeMessage $parsed, Message $message): int
+    {
+        $bytes = 0;
 
         foreach ($parsed->getAllAttachmentParts() as $part) {
             $filename = $part->getFilename() ?: 'attachment-'.Str::random(6);
@@ -196,10 +289,10 @@ class ProcessIncomingMessage implements ShouldQueue
                 'is_inline' => $part->getContentDisposition() === 'inline' || $contentId !== null,
             ]);
 
-            $stored = true;
+            $bytes += strlen($content);
         }
 
-        return $stored;
+        return $bytes;
     }
 
     /**
@@ -218,21 +311,33 @@ class ProcessIncomingMessage implements ShouldQueue
     }
 
     /**
-     * Trim the inbox down to its max_messages cap (oldest first).
+     * Trim the inbox down to its max_messages cap (oldest first). Returns
+     * the exact bytes removed (raw sizes + attachment sizes) so the caller
+     * can fold them into the ingestion commit — deliberately NOT routed
+     * through MessageDeleter, whose own removal operation would cost two
+     * extra quota round trips per accepted message.
      */
-    protected function enforceRetention(Inbox $inbox): void
+    protected function enforceRetention(Inbox $inbox): int
     {
         $overflow = $inbox->messages()->count() - $inbox->max_messages;
 
         if ($overflow <= 0) {
-            return;
+            return 0;
         }
 
+        $bytes = 0;
+
         $inbox->messages()
+            ->with('attachments')
             ->orderBy('received_at')
             ->limit($overflow)
             ->get()
-            ->each->delete();
+            ->each(function (Message $message) use (&$bytes) {
+                $bytes += (int) $message->size + (int) $message->attachments->sum('size');
+                $message->delete();
+            });
+
+        return $bytes;
     }
 
     /**

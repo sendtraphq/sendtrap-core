@@ -5,7 +5,7 @@
             "description": "The authenticated inbox itself — credentials, limits, message counts.",
             "item": [
                 {
-                    "id": "9027df63-b1fe-401e-97cd-c1844fdc3c07",
+                    "id": "eac82b13-59bf-4f50-9b12-48649bf67fd3",
                     "name": "Get the authenticated inbox",
                     "request": {
                         "name": "Get the authenticated inbox",
@@ -36,7 +36,7 @@
                     },
                     "response": [
                         {
-                            "id": "f6f2bc74-60bc-473b-95c6-553a5e2e1759",
+                            "id": "a838e98c-7373-429d-a023-03b10c8b5c9a",
                             "name": "The authenticated inbox.",
                             "originalRequest": {
                                 "url": {
@@ -98,7 +98,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "280b4054-cdfc-4126-8102-1470e0e8e13b",
+                            "id": "49fb04c0-d19e-46a4-807f-668be25b3004",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -142,7 +142,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "16167057-f42d-46ed-b811-726bdb10ef5a",
+                            "id": "a224955f-a96b-4f44-b7f5-da3b3cce8547",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -186,7 +186,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a5b6dad7-33d9-4ea6-bcfe-8fe7022bfd03",
+                            "id": "4c955d16-f459-4347-b2b1-40eff5005d9c",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -269,7 +269,7 @@
             "description": "List, read, download and manage captured messages.",
             "item": [
                 {
-                    "id": "c85c4a50-53b8-4a5b-b5b8-434f5797eae8",
+                    "id": "45874e23-61b3-43e2-ae4b-bf7aca88a435",
                     "name": "List messages",
                     "request": {
                         "name": "List messages",
@@ -364,7 +364,7 @@
                     },
                     "response": [
                         {
-                            "id": "c246c1f9-5bf5-4064-acdb-62774dfc3497",
+                            "id": "5dc005e8-9d53-473a-a532-f3967c038d34",
                             "name": "One page of messages (possibly empty).",
                             "originalRequest": {
                                 "url": {
@@ -490,7 +490,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9156ce46-9512-4d58-aefc-636a40b5b372",
+                            "id": "9c192bcc-7653-4501-a8dc-e7681c75d0e1",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -598,7 +598,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7a2cdf7c-06d4-4543-92ea-34c8923a091d",
+                            "id": "25af305a-cb88-4522-a6ee-e5639e29826e",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -706,7 +706,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "030816d3-3b9b-481b-8dca-1a2c8da8fbd8",
+                            "id": "d4ec933e-96e2-4c96-a3a1-53d0aca9e02d",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -847,7 +847,7 @@
                     }
                 },
                 {
-                    "id": "d7a11bfd-c514-40f4-8dc0-6bd8c0d1f89b",
+                    "id": "5d290059-ef92-4a63-b070-8f3f1df7936e",
                     "name": "Delete messages",
                     "request": {
                         "name": "Delete messages",
@@ -915,7 +915,7 @@
                     },
                     "response": [
                         {
-                            "id": "fc40344c-c68b-42d8-aebf-cd7f4ad7b60f",
+                            "id": "aed2b951-2ade-42bd-8bcf-e817872d4f5b",
                             "name": "Matching messages deleted.",
                             "originalRequest": {
                                 "url": {
@@ -996,7 +996,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d93af5c5-c023-4cb7-a288-1759ac2f284b",
+                            "id": "d0dd2f39-a1cc-49f3-a47a-490ebcd0ad55",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -1077,7 +1077,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "45f873dc-87b8-44a4-acc9-fedf05072ade",
+                            "id": "c2a78c49-9dee-498a-9f1d-dba8897a782e",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -1158,7 +1158,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7c721412-b17c-402b-bc0d-7b06bd52dc9a",
+                            "id": "e93e51af-e23e-4040-b2f5-e2acc87edfb9",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -1272,7 +1272,7 @@
                     }
                 },
                 {
-                    "id": "074d32d2-4051-46b0-bbdd-ea93ac272cc8",
+                    "id": "59f9b3c6-6a78-4f9e-9a33-ec2e02ae112a",
                     "name": "Get a message",
                     "request": {
                         "name": "Get a message",
@@ -1315,7 +1315,7 @@
                     },
                     "response": [
                         {
-                            "id": "7d0ce36f-3ad5-4f5e-9521-2ac08174ff84",
+                            "id": "b96a1342-36e8-403b-a808-d518dea51e17",
                             "name": "The message.",
                             "originalRequest": {
                                 "url": {
@@ -1366,12 +1366,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n  \"data\": {\n    \"id\": \"<integer>\",\n    \"inbox_id\": \"<integer>\",\n    \"message_id\": \"<string,null>\",\n    \"test_id\": \"<string,null>\",\n    \"envelope_from\": \"<string,null>\",\n    \"envelope_to\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"from_address\": \"<string,null>\",\n    \"from_name\": \"<string,null>\",\n    \"to\": [\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      },\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      }\n    ],\n    \"cc\": [\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      },\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      }\n    ],\n    \"subject\": \"<string,null>\",\n    \"size\": \"<integer>\",\n    \"is_read\": \"<boolean>\",\n    \"has_html\": \"<boolean>\",\n    \"has_text\": \"<boolean>\",\n    \"has_attachments\": \"<boolean>\",\n    \"has_unresolved_merge_tags\": \"<boolean>\",\n    \"unresolved_merge_tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"received_at\": \"<string,null-date-time>\",\n    \"html\": \"<string,null>\",\n    \"text\": \"<string,null>\",\n    \"links\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"checks\": [\n      {\n        \"key\": \"<string>\",\n        \"passed\": \"<boolean>\",\n        \"severity\": \"info\"\n      },\n      {\n        \"key\": \"<string>\",\n        \"passed\": \"<boolean>\",\n        \"severity\": \"warn\"\n      }\n    ],\n    \"headers\": [\n      {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ],\n    \"attachments\": [\n      {\n        \"id\": \"<integer>\",\n        \"filename\": \"<string,null>\",\n        \"content_type\": \"<string,null>\",\n        \"size\": \"<integer>\",\n        \"checksum\": \"<string,null>\",\n        \"is_inline\": \"<boolean>\",\n        \"url\": \"<uri>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"filename\": \"<string,null>\",\n        \"content_type\": \"<string,null>\",\n        \"size\": \"<integer>\",\n        \"checksum\": \"<string,null>\",\n        \"is_inline\": \"<boolean>\",\n        \"url\": \"<uri>\"\n      }\n    ],\n    \"urls\": {\n      \"raw\": \"<uri>\",\n      \"html\": \"<uri>\"\n    }\n  }\n}",
+                            "body": "{\n  \"data\": {\n    \"id\": \"<integer>\",\n    \"inbox_id\": \"<integer>\",\n    \"message_id\": \"<string,null>\",\n    \"test_id\": \"<string,null>\",\n    \"envelope_from\": \"<string,null>\",\n    \"envelope_to\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"from_address\": \"<string,null>\",\n    \"from_name\": \"<string,null>\",\n    \"to\": [\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      },\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      }\n    ],\n    \"cc\": [\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      },\n      {\n        \"address\": \"<string,null>\",\n        \"name\": \"<string,null>\"\n      }\n    ],\n    \"subject\": \"<string,null>\",\n    \"size\": \"<integer>\",\n    \"is_read\": \"<boolean>\",\n    \"has_html\": \"<boolean>\",\n    \"has_text\": \"<boolean>\",\n    \"has_attachments\": \"<boolean>\",\n    \"has_unresolved_merge_tags\": \"<boolean>\",\n    \"unresolved_merge_tags\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"received_at\": \"<string,null-date-time>\",\n    \"html\": \"<string,null>\",\n    \"text\": \"<string,null>\",\n    \"links\": [\n      \"<string>\",\n      \"<string>\"\n    ],\n    \"checks\": [\n      {\n        \"key\": \"<string>\",\n        \"passed\": \"<boolean>\",\n        \"severity\": \"error\"\n      },\n      {\n        \"key\": \"<string>\",\n        \"passed\": \"<boolean>\",\n        \"severity\": \"error\"\n      }\n    ],\n    \"headers\": [\n      {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\"\n      },\n      {\n        \"name\": \"<string>\",\n        \"value\": \"<string>\"\n      }\n    ],\n    \"attachments\": [\n      {\n        \"id\": \"<integer>\",\n        \"filename\": \"<string,null>\",\n        \"content_type\": \"<string,null>\",\n        \"size\": \"<integer>\",\n        \"checksum\": \"<string,null>\",\n        \"is_inline\": \"<boolean>\",\n        \"url\": \"<uri>\"\n      },\n      {\n        \"id\": \"<integer>\",\n        \"filename\": \"<string,null>\",\n        \"content_type\": \"<string,null>\",\n        \"size\": \"<integer>\",\n        \"checksum\": \"<string,null>\",\n        \"is_inline\": \"<boolean>\",\n        \"url\": \"<uri>\"\n      }\n    ],\n    \"urls\": {\n      \"raw\": \"<uri>\",\n      \"html\": \"<uri>\"\n    }\n  }\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "407d6913-4ad8-422e-b84f-8f13df51ec8e",
+                            "id": "0e47ad63-09b6-44f8-b2a6-c32ffc663dbf",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -1427,7 +1427,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "b9481629-617c-48c4-9ca5-a390d009aec4",
+                            "id": "ca5c49eb-6f9f-4dc9-9c69-e1bc741faea9",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -1483,7 +1483,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cc6c7401-0ff2-44f7-ba5a-93c9795cedcd",
+                            "id": "156cd382-7a41-49ae-a080-6fe8278bf0c9",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -1539,7 +1539,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "82664c54-f064-482a-90df-439c26429279",
+                            "id": "6a430605-3ac2-49ba-924e-a79a7d499f6a",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -1628,7 +1628,7 @@
                     }
                 },
                 {
-                    "id": "c2d7e64e-1903-4677-9fbd-b861df751202",
+                    "id": "89da49e3-7dc3-4440-9c04-dfe4b591249a",
                     "name": "Update a message (read state)",
                     "request": {
                         "name": "Update a message (read state)",
@@ -1684,7 +1684,7 @@
                     },
                     "response": [
                         {
-                            "id": "f27e1be7-e667-4d5d-ae33-32144e98cb04",
+                            "id": "0bdd4496-c4c0-4d04-83a2-e08601ed3315",
                             "name": "The updated message.",
                             "originalRequest": {
                                 "url": {
@@ -1753,7 +1753,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "23a16b53-9b57-49da-9926-584cf32becaf",
+                            "id": "a85e69ef-aa6b-47ed-9ae4-a0c989d81083",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -1822,7 +1822,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a415cf65-19c5-48da-a087-7218427f8fbe",
+                            "id": "eed89e0e-730e-4500-9097-8573e5159678",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -1891,7 +1891,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "77619d93-d9c5-4c25-98c4-996defaedc19",
+                            "id": "52cfffe7-1364-45df-a559-58d4d24f6b68",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -1960,7 +1960,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4bcba836-aabb-42b9-9061-40562927cc3f",
+                            "id": "b45640fe-8d6a-472e-b43c-92dd6669a6ab",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -2062,7 +2062,7 @@
                     }
                 },
                 {
-                    "id": "4ef30f5a-832a-435a-90a0-c5e359bef64a",
+                    "id": "4b632ce2-6805-4d98-9e66-ad7e4c7c2a09",
                     "name": "Delete a message",
                     "request": {
                         "name": "Delete a message",
@@ -2102,7 +2102,7 @@
                     },
                     "response": [
                         {
-                            "id": "3fbcb835-53a5-4006-9894-e1a307882401",
+                            "id": "aa88a5e2-53bd-4236-a6d9-75af82c129c4",
                             "name": "Message deleted.",
                             "originalRequest": {
                                 "url": {
@@ -2158,7 +2158,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cb889f30-49d5-4d05-8fd0-673b81a2f618",
+                            "id": "200b8b24-c1ca-4319-abe7-c9578250a537",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -2214,7 +2214,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "af892e4f-7032-4de1-bcac-25d3b0578f26",
+                            "id": "f33bc06a-4607-4bc0-bc8f-b79025347740",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -2270,7 +2270,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4bc2e235-0a47-42c7-89ec-db6e7c5b51a4",
+                            "id": "f7943565-4b79-487a-a60f-5c2dd90500ae",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -2326,7 +2326,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "16b200ac-259c-4dd1-a7b8-e0f65d109cd2",
+                            "id": "58e9598a-df25-4243-8ead-03415f0c3310",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -2415,7 +2415,7 @@
                     }
                 },
                 {
-                    "id": "efd21e6a-c5c2-462e-9618-27d389f3ce4f",
+                    "id": "db82e22c-3947-43e8-a5f2-702d79db2881",
                     "name": "Download the raw RFC 822 source",
                     "request": {
                         "name": "Download the raw RFC 822 source",
@@ -2456,7 +2456,7 @@
                     },
                     "response": [
                         {
-                            "id": "645d56ff-f8bc-49dc-8e05-7b9c0d740932",
+                            "id": "62d4a362-be85-4e7b-8524-8f3d1a1b0e84",
                             "name": "The complete raw message source.",
                             "originalRequest": {
                                 "url": {
@@ -2513,7 +2513,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "f908c0ed-b7c5-4f42-bc93-5d153fc3f366",
+                            "id": "a0e873f9-acfb-4b9b-9f5f-3ba51fb49c40",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -2570,7 +2570,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "354aee80-d4f1-40a9-887a-a4edf11e5d67",
+                            "id": "5331c11f-9461-4325-944d-e3a52311a122",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -2627,7 +2627,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "96537fd3-9bee-4a8a-b550-d36136af5c29",
+                            "id": "8daa3699-d260-494f-8539-4bbf14198398",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -2684,7 +2684,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "927f38fb-c384-4c6e-a6df-6539ac06af75",
+                            "id": "4fe1bcbc-2b81-44fd-b441-947c8aa59571",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -2774,7 +2774,7 @@
                     }
                 },
                 {
-                    "id": "78b09f29-b0fb-48c3-aade-aee40184ce64",
+                    "id": "759c2283-7cf7-4056-bb7a-a630f7ed8e53",
                     "name": "Get the rendered HTML body",
                     "request": {
                         "name": "Get the rendered HTML body",
@@ -2818,7 +2818,7 @@
                     },
                     "response": [
                         {
-                            "id": "2b0e5ac1-6b71-4836-a50f-1bf6000a5efc",
+                            "id": "a8b42beb-bfc2-4198-83c7-5d2c412ab402",
                             "name": "Rendered HTML.",
                             "originalRequest": {
                                 "url": {
@@ -2875,7 +2875,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "da826320-eecf-4c42-b616-76d44a5d0f8e",
+                            "id": "46f2267d-d6cc-4ddf-b784-ca17c42739a6",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -2932,7 +2932,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "e0706141-37eb-430b-9602-5731a65685d7",
+                            "id": "3ba2fc11-b029-4245-abcd-c3e36a535970",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -2989,7 +2989,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2cb10211-8ee9-4093-af83-0e915d5bbb67",
+                            "id": "d8f8d967-52b0-41f3-8f4e-df193017640b",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -3046,7 +3046,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "071b5d55-d347-4a08-ba82-8ee22649f822",
+                            "id": "bac8c33a-4a91-4f83-9327-a5609b359b54",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -3136,7 +3136,7 @@
                     }
                 },
                 {
-                    "id": "050c048f-9db9-47ad-bd35-9c58da5251b9",
+                    "id": "569440ca-b786-41ca-9617-caba36bc158c",
                     "name": "Download an attachment",
                     "request": {
                         "name": "Download an attachment",
@@ -3188,7 +3188,7 @@
                     },
                     "response": [
                         {
-                            "id": "c8c6a9a2-574b-42aa-b84c-38ef3f2a8a1e",
+                            "id": "e0b493f4-edef-4799-b88b-48cd1419e627",
                             "name": "The attachment content, as a download.",
                             "originalRequest": {
                                 "url": {
@@ -3265,7 +3265,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "744889d2-92f2-4e53-972e-2fd71f2441df",
+                            "id": "4d57e196-d1a3-4dc2-bae3-6690d7cf3f06",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -3333,7 +3333,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "b19c1d50-499e-4db7-a582-ffe642f7040d",
+                            "id": "71521f96-d15a-4fe8-8a25-506ae375e29a",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -3401,7 +3401,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4be7f2c9-97ad-4a34-83f0-d64c391a1a16",
+                            "id": "0d4e0cc8-8d65-4af0-af1f-eb89760300cf",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -3469,7 +3469,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3cf0ca30-3807-49d0-9f44-57787a1f3b4e",
+                            "id": "0dae297b-73cf-48c5-9938-d39bd700608a",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -3576,7 +3576,7 @@
             "description": "Blocking assertions for CI / end-to-end test suites.",
             "item": [
                 {
-                    "id": "ec5fbce7-833b-45d7-a235-ff1da738259c",
+                    "id": "f0019750-2055-4436-b7c7-ca45a2507f6a",
                     "name": "Assert that a matching message arrives",
                     "request": {
                         "name": "Assert that a matching message arrives",
@@ -3620,7 +3620,7 @@
                     },
                     "response": [
                         {
-                            "id": "aad9dc79-9a00-4408-9904-527a02becfae",
+                            "id": "35fd4344-acc7-4c1a-85f3-3de622e4809c",
                             "name": "Assertion outcome (pass or fail).",
                             "originalRequest": {
                                 "url": {
@@ -3677,7 +3677,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "eaa5e0d7-a104-4a85-a685-5bc290d27448",
+                            "id": "515c18c4-9c2b-4257-bfd6-099ebb938577",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -3734,7 +3734,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "0e6a3127-84c0-499e-816f-0ccc3955b644",
+                            "id": "2afff60c-c12b-4233-8d4f-15ad75c966ce",
                             "name": "IP not allowed, or `min_compatibility_score` used without HTML\nCheck API access.",
                             "originalRequest": {
                                 "url": {
@@ -3791,7 +3791,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "8353339f-310d-4ab9-be4e-9adaedee7b04",
+                            "id": "2573599b-4d8b-49cf-a46c-d6cd5ad86769",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -3881,12 +3881,12 @@
                     }
                 },
                 {
-                    "id": "9992ba64-8f59-4f16-aec5-e44bf1743f61",
+                    "id": "0429749f-c2bd-4924-a78a-139902dd53bf",
                     "name": "Expect messages — wait, match, assert, diagnose",
                     "request": {
                         "name": "Expect messages — wait, match, assert, diagnose",
                         "description": {
-                            "content": "The recommended testing endpoint: one deterministic request that\nwaits for mail, evaluates expressive **match** conditions to select\ncandidate messages, applies post-match **assert** conditions, and\nreturns a machine-readable diagnostic that distinguishes *no mail\narrived* (`no_candidates`) from *mail arrived but didn't match*\n(`no_match`) from *the right mail arrived with the wrong content*\n(`assertions_failed`). Supersedes `/assert` for new integrations\n(which remains unchanged).\n\nConditions are `{field, op, value}` triples. Fields: `subject`,\n`from.address`, `from.name`, `to`, `cc`, `envelope_to`, `text`,\n`html`, `links`, `test_id`, `message_id`, `size`, `is_read`,\n`has_unresolved_merge_tags`, `attachments.count`,\n`attachments.filename`, `attachments.content_type`,\n`header.<Name>`, `checks.<key>`.\nOperators: `equals`, `contains`, `starts_with`, `ends_with`,\n`matches` (bounded regex), `exists`, and `gt`/`gte`/`lt`/`lte` for\nnumeric fields. List-valued fields (recipients, links, attachment\nmetadata, headers) pass when **any** element satisfies the operator.\n\nThe wait blocks server-side up to `wait.timeout_ms` (clamped to the\nserver ceiling, default 30 s) and keeps re-evaluating until the whole\nexpectation — count requirement **and** assertions — is satisfied.\nRate-limited by the `inbox-api-wait` limiter (15/min).\n\n`mode: strict` returns **422** with the same diagnostic body when the\nexpectation is unmet, so plain HTTP-error handling fails a CI step.\nRequests are validated before any message parsing; caps: 20\nconditions per list, 1 KiB values, 256-byte regexes, 50 candidates\nevaluated per pass.\n",
+                            "content": "The recommended testing endpoint: one deterministic request that\nwaits for mail, evaluates expressive **match** conditions to select\ncandidate messages, applies post-match **assert** conditions, and\nreturns a machine-readable diagnostic that distinguishes *no mail\narrived* (`no_candidates`) from *mail arrived but didn't match*\n(`no_match`) from *the right mail arrived with the wrong content*\n(`assertions_failed`). Supersedes `/assert` for new integrations\n(which remains unchanged).\n\nConditions are `{field, op, value}` triples. Fields: `subject`,\n`from.address`, `from.name`, `to`, `cc`, `envelope_to`, `text`,\n`html`, `links`, `test_id`, `message_id`, `size`, `is_read`,\n`has_unresolved_merge_tags`, `attachments.count`,\n`attachments.filename`, `attachments.content_type`,\n`header.<Name>`, `checks.<key>`.\nOperators: `equals`, `contains`, `starts_with`, `ends_with`,\n`matches` (bounded regex), `exists`, and `gt`/`gte`/`lt`/`lte` for\nnumeric fields. List-valued fields (recipients, links, attachment\nmetadata, headers) pass when **any** element satisfies the operator.\n\nThe wait blocks server-side up to `wait.timeout_ms` (clamped to the\nserver ceiling, default 30 s) and keeps re-evaluating until the whole\nexpectation — count requirement **and** assertions — is satisfied.\nRate-limited by the `inbox-api-wait` limiter (15/min).\n\nAn optional `extract` object (same named extractors as\n`POST /messages/{messageId}/extract`) makes matching and extraction\natomic: extractors run against the first matched message once the\ncount requirement and assertions hold, results ride on the response\nunder `extract`, and a non-optional miss keeps the wait loop polling\nand reports `extraction_failed` — so \"wait for the signup mail and\ngive me the six-digit code\" is one request.\n\n`mode: strict` returns **422** with the same diagnostic body when the\nexpectation is unmet, so plain HTTP-error handling fails a CI step.\nRequests are validated before any message parsing; caps: 20\nconditions per list, 10 extractors, 1 KiB values, 256-byte regexes,\n50 candidates evaluated per pass.\n",
                             "type": "text/plain"
                         },
                         "url": {
@@ -3913,7 +3913,7 @@
                         "method": "POST",
                         "body": {
                             "mode": "raw",
-                            "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"lte\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\"\n}",
+                            "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"matches\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\",\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"address\",\n      \"select\": \"first\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"link\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  }\n}",
                             "options": {
                                 "raw": {
                                     "headerFamily": "json",
@@ -3925,7 +3925,7 @@
                     },
                     "response": [
                         {
-                            "id": "ef367cd9-0df9-4abd-a9e2-3284f9a9f42e",
+                            "id": "fa1c8eaf-778f-4cf7-9042-7a325777c6b5",
                             "name": "Report-mode result (any outcome), or a strict-mode success.",
                             "originalRequest": {
                                 "url": {
@@ -3960,7 +3960,7 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"lte\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\"\n}",
+                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"matches\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\",\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"address\",\n      \"select\": \"first\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"link\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  }\n}",
                                     "options": {
                                         "raw": {
                                             "headerFamily": "json",
@@ -3977,12 +3977,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n  \"matched\": \"<boolean>\",\n  \"status\": \"assertions_failed\",\n  \"elapsed_ms\": \"<integer>\",\n  \"candidates_seen\": \"<integer>\",\n  \"count\": {\n    \"required\": {},\n    \"actual\": \"<integer>\"\n  },\n  \"messages\": [\n    {\n      \"id\": \"<integer>\",\n      \"test_id\": \"<string,null>\",\n      \"from_address\": \"<string,null>\",\n      \"from_name\": \"<string,null>\",\n      \"to\": [\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        },\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        }\n      ],\n      \"envelope_to\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subject\": \"<string,null>\",\n      \"size\": \"<integer>\",\n      \"is_read\": \"<boolean>\",\n      \"has_attachments\": \"<boolean>\",\n      \"has_unresolved_merge_tags\": \"<boolean>\",\n      \"received_at\": \"<string,null-date-time>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"test_id\": \"<string,null>\",\n      \"from_address\": \"<string,null>\",\n      \"from_name\": \"<string,null>\",\n      \"to\": [\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        },\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        }\n      ],\n      \"envelope_to\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subject\": \"<string,null>\",\n      \"size\": \"<integer>\",\n      \"is_read\": \"<boolean>\",\n      \"has_attachments\": \"<boolean>\",\n      \"has_unresolved_merge_tags\": \"<boolean>\",\n      \"received_at\": \"<string,null-date-time>\"\n    }\n  ],\n  \"conditions\": [\n    {\n      \"type\": \"match\",\n      \"field\": \"<string>\",\n      \"op\": \"<string>\",\n      \"passed\": \"<boolean,null>\",\n      \"value\": \"\",\n      \"actual\": \"\"\n    },\n    {\n      \"type\": \"assert\",\n      \"field\": \"<string>\",\n      \"op\": \"<string>\",\n      \"passed\": \"<boolean,null>\",\n      \"value\": \"\",\n      \"actual\": \"\"\n    }\n  ],\n  \"request_id\": \"<uuid>\",\n  \"assertions_failed_on\": \"<integer,null>\"\n}",
+                            "body": "{\n  \"matched\": \"<boolean>\",\n  \"status\": \"no_candidates\",\n  \"elapsed_ms\": \"<integer>\",\n  \"candidates_seen\": \"<integer>\",\n  \"count\": {\n    \"required\": {},\n    \"actual\": \"<integer>\"\n  },\n  \"messages\": [\n    {\n      \"id\": \"<integer>\",\n      \"test_id\": \"<string,null>\",\n      \"from_address\": \"<string,null>\",\n      \"from_name\": \"<string,null>\",\n      \"to\": [\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        },\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        }\n      ],\n      \"envelope_to\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subject\": \"<string,null>\",\n      \"size\": \"<integer>\",\n      \"is_read\": \"<boolean>\",\n      \"has_attachments\": \"<boolean>\",\n      \"has_unresolved_merge_tags\": \"<boolean>\",\n      \"received_at\": \"<string,null-date-time>\"\n    },\n    {\n      \"id\": \"<integer>\",\n      \"test_id\": \"<string,null>\",\n      \"from_address\": \"<string,null>\",\n      \"from_name\": \"<string,null>\",\n      \"to\": [\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        },\n        {\n          \"address\": \"<string,null>\",\n          \"name\": \"<string,null>\"\n        }\n      ],\n      \"envelope_to\": [\n        \"<string>\",\n        \"<string>\"\n      ],\n      \"subject\": \"<string,null>\",\n      \"size\": \"<integer>\",\n      \"is_read\": \"<boolean>\",\n      \"has_attachments\": \"<boolean>\",\n      \"has_unresolved_merge_tags\": \"<boolean>\",\n      \"received_at\": \"<string,null-date-time>\"\n    }\n  ],\n  \"conditions\": [\n    {\n      \"type\": \"match\",\n      \"field\": \"<string>\",\n      \"op\": \"<string>\",\n      \"passed\": \"<boolean,null>\",\n      \"value\": \"\",\n      \"actual\": \"\"\n    },\n    {\n      \"type\": \"assert\",\n      \"field\": \"<string>\",\n      \"op\": \"<string>\",\n      \"passed\": \"<boolean,null>\",\n      \"value\": \"\",\n      \"actual\": \"\"\n    }\n  ],\n  \"extract\": {\n    \"key_0\": {\n      \"found\": \"<boolean>\",\n      \"status\": \"ambiguous\",\n      \"value\": \"\",\n      \"matches\": \"<integer>\",\n      \"source\": \"<string,null>\",\n      \"context\": \"<string,null>\",\n      \"candidates\": \"<array,null>\"\n    }\n  },\n  \"request_id\": \"<uuid>\",\n  \"assertions_failed_on\": \"<integer,null>\"\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "795475c8-7af5-44e5-9fd4-17d3df514417",
+                            "id": "83206684-d6c6-4ffb-ac08-d13b52a5f8f6",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -4017,7 +4017,7 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"lte\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\"\n}",
+                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"matches\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\",\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"address\",\n      \"select\": \"first\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"link\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  }\n}",
                                     "options": {
                                         "raw": {
                                             "headerFamily": "json",
@@ -4039,7 +4039,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "30f5dfd8-2fdc-44a9-8203-e31573496a1e",
+                            "id": "7974227e-a81e-44e7-929b-d15922ad06a5",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -4074,7 +4074,7 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"lte\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\"\n}",
+                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"matches\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\",\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"address\",\n      \"select\": \"first\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"link\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  }\n}",
                                     "options": {
                                         "raw": {
                                             "headerFamily": "json",
@@ -4096,7 +4096,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d89e3b6b-81c8-4544-bbe2-d6b3ab53a939",
+                            "id": "340bb828-5d51-4ad6-863a-16ef6c4202c4",
                             "name": "Invalid request (unknown field/operator, bad regex, cap\nexceeded — body is the common error envelope with a\n`request_id`), or a strict-mode unmet expectation (body is the\nfull `ExpectResult` diagnostic).",
                             "originalRequest": {
                                 "url": {
@@ -4131,7 +4131,7 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"lte\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\"\n}",
+                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"matches\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\",\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"address\",\n      \"select\": \"first\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"link\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  }\n}",
                                     "options": {
                                         "raw": {
                                             "headerFamily": "json",
@@ -4153,7 +4153,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2ddb3688-a1a7-4eb9-b503-5f0efa696ebe",
+                            "id": "9bade5ac-6047-475e-a144-3f0fb10dcf99",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -4188,7 +4188,517 @@
                                 "method": "POST",
                                 "body": {
                                     "mode": "raw",
-                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"lte\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\"\n}",
+                                    "raw": "{\n  \"match\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"matches\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    }\n  ],\n  \"assert\": [\n    {\n      \"field\": \"<string>\",\n      \"op\": \"equals\",\n      \"value\": \"\"\n    },\n    {\n      \"field\": \"<string>\",\n      \"op\": \"contains\",\n      \"value\": \"\"\n    }\n  ],\n  \"scope\": {\n    \"test_id\": \"<string>\",\n    \"received_after\": \"<dateTime>\",\n    \"received_before\": \"<dateTime>\",\n    \"after_message_id\": \"<integer>\",\n    \"unread_only\": false\n  },\n  \"wait\": {\n    \"timeout_ms\": 0\n  },\n  \"count\": {\n    \"at_least\": \"<integer>\",\n    \"exactly\": \"<integer>\"\n  },\n  \"sort\": \"newest\",\n  \"mark_read\": false,\n  \"mode\": \"report\",\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"address\",\n      \"select\": \"first\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"link\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  }\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Too Many Requests",
+                            "code": 429,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "Seconds until the limiter window resets.",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "Retry-After",
+                                    "value": "<integer>"
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "X-RateLimit-Limit",
+                                    "value": ""
+                                },
+                                {
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "",
+                                        "type": "text/plain"
+                                    },
+                                    "key": "X-RateLimit-Remaining",
+                                    "value": ""
+                                }
+                            ],
+                            "body": "{\n  \"message\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        }
+                    ],
+                    "event": [],
+                    "protocolProfileBehavior": {
+                        "disableBodyPruning": true
+                    }
+                },
+                {
+                    "id": "8bcc357c-22f9-4a1a-93af-47d043310923",
+                    "name": "Extract values from a message",
+                    "request": {
+                        "name": "Extract values from a message",
+                        "description": {
+                            "content": "Deterministic, named extraction from a known message — no custom\nemail parsing in the test suite, no waiting (pair with `/expect` for\nthe atomic wait-and-extract form). Each named extractor returns a\ntyped value with an explicit `found` state, the source field it\nsearched, bounded context, and `ambiguous` diagnostics instead of a\nsilent guess. Nothing is ever fetched; bodies and attachment bytes\nare never echoed back.\n\nExtractor types:\n- `regex` — bounded regex capture from `text`, `html` (raw source),\n  `subject` or `header.<Name>` (default `text`). The first capture\n  group's value is extracted, else the whole match.\n- `code` — verification-code helper: a standalone token of `length`\n  (4–12, default 6) characters from `charset` (`digits` default,\n  `letters`, `upper`, `alphanumeric`), never fished out of a longer\n  run. Searches visible text (`from: auto` prefers the text part,\n  falling back to tag-stripped HTML). `near` anchors the search to a\n  phrase (\"verification code\"); the token nearest the anchor wins,\n  equally-near distinct tokens stay ambiguous.\n- `link` — select a link by exact `url`, `host`, `path_prefix`,\n  `query_param` (name or `{name, value}`), visible `text_contains`,\n  or a `matches` regex on the URL; criteria AND together. Links come\n  from a tolerant HTML parse of the body; relative URLs stay\n  relative unless the message declares a valid absolute\n  `<base href>`. Value is `{url, text}` — returned, never fetched.\n- `address` — `{address, name}` from `from`, `to`, `cc`,\n  `envelope_from` or `envelope_to` (the envelope catches BCC-only\n  recipients), optionally filtered by a `matches` regex on the\n  address.\n- `attachment` — metadata (`id`, `filename`, `content_type`, `size`,\n  `checksum`) plus the authenticated download URL, selected by exact\n  `filename`, `filename_contains`, a `matches` regex on the\n  filename, or `content_type` (a `/*` wildcard subtype matches the\n  whole type family).\n\nEvery extractor also takes `select` (`first` | `last` | `all`) —\nwithout it, several distinct matches return `status: ambiguous` with\na candidate list — and `optional: true`, which keeps a miss from\nfailing `found_all` and strict mode. Caps: 10 extractors per\nrequest, 256-byte regexes (server-delimited, user input never\nchooses modifiers), 1 KiB option values.\n",
+                            "type": "text/plain"
+                        },
+                        "url": {
+                            "path": [
+                                "v1",
+                                "messages",
+                                ":messageId",
+                                "extract"
+                            ],
+                            "host": [
+                                "{{baseUrl}}"
+                            ],
+                            "query": [],
+                            "variable": [
+                                {
+                                    "type": "any",
+                                    "value": "<integer>",
+                                    "key": "messageId",
+                                    "disabled": false,
+                                    "description": {
+                                        "content": "(Required) Numeric message id. Messages belonging to a different inbox return `404`.",
+                                        "type": "text/plain"
+                                    }
+                                }
+                            ]
+                        },
+                        "header": [
+                            {
+                                "key": "Content-Type",
+                                "value": "application/json"
+                            },
+                            {
+                                "key": "Accept",
+                                "value": "application/json"
+                            }
+                        ],
+                        "method": "POST",
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"attachment\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_3\": {\n      \"type\": \"code\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_4\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_5\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_6\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_7\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_8\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  },\n  \"mode\": \"report\"\n}",
+                            "options": {
+                                "raw": {
+                                    "headerFamily": "json",
+                                    "language": "json"
+                                }
+                            }
+                        },
+                        "auth": null
+                    },
+                    "response": [
+                        {
+                            "id": "157e7477-a2f8-43cf-9a3b-2992d1a700b5",
+                            "name": "Report-mode result (any outcome, including misses), or a\nstrict-mode success.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "messages",
+                                        ":messageId",
+                                        "extract"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Numeric message id. Messages belonging to a different inbox return `404`.",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<integer>",
+                                            "key": "messageId"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"attachment\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_3\": {\n      \"type\": \"code\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_4\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_5\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_6\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_7\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_8\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  },\n  \"mode\": \"report\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "OK",
+                            "code": 200,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"message_id\": \"<integer>\",\n  \"found_all\": \"<boolean>\",\n  \"extract\": {\n    \"key_0\": {\n      \"found\": \"<boolean>\",\n      \"status\": \"not_found\",\n      \"value\": \"\",\n      \"matches\": \"<integer>\",\n      \"source\": \"<string,null>\",\n      \"context\": \"<string,null>\",\n      \"candidates\": \"<array,null>\"\n    }\n  },\n  \"request_id\": \"<uuid>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "c4563c93-fd98-4d60-9338-8a505e01544d",
+                            "name": "Missing or invalid API token.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "messages",
+                                        ":messageId",
+                                        "extract"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Numeric message id. Messages belonging to a different inbox return `404`.",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<integer>",
+                                            "key": "messageId"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"attachment\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_3\": {\n      \"type\": \"code\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_4\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_5\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_6\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_7\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_8\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  },\n  \"mode\": \"report\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Unauthorized",
+                            "code": 401,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"message\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "b0a613e5-23da-478a-bdba-dbf6cdf0a7d0",
+                            "name": "The caller's IP address is outside the inbox's allow-list.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "messages",
+                                        ":messageId",
+                                        "extract"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Numeric message id. Messages belonging to a different inbox return `404`.",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<integer>",
+                                            "key": "messageId"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"attachment\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_3\": {\n      \"type\": \"code\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_4\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_5\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_6\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_7\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_8\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  },\n  \"mode\": \"report\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Forbidden",
+                            "code": 403,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"message\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "1aa34171-948e-4a69-be7b-f5c45f4a0c22",
+                            "name": "No such resource in this inbox (includes resources owned by other inboxes).",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "messages",
+                                        ":messageId",
+                                        "extract"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Numeric message id. Messages belonging to a different inbox return `404`.",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<integer>",
+                                            "key": "messageId"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"attachment\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_3\": {\n      \"type\": \"code\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_4\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_5\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_6\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_7\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_8\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  },\n  \"mode\": \"report\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Not Found",
+                            "code": 404,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"message\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "ae9460c7-3a0e-44ac-a5e9-d339617680fc",
+                            "name": "Invalid request (unknown extractor type or option, bad regex,\ncap exceeded — body is the common error envelope with a\n`request_id`), or a strict-mode miss (body is the full\n`ExtractResult`).",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "messages",
+                                        ":messageId",
+                                        "extract"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Numeric message id. Messages belonging to a different inbox return `404`.",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<integer>",
+                                            "key": "messageId"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"attachment\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_3\": {\n      \"type\": \"code\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_4\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_5\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_6\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_7\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_8\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  },\n  \"mode\": \"report\"\n}",
+                                    "options": {
+                                        "raw": {
+                                            "headerFamily": "json",
+                                            "language": "json"
+                                        }
+                                    }
+                                }
+                            },
+                            "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+                            "code": 422,
+                            "header": [
+                                {
+                                    "key": "Content-Type",
+                                    "value": "application/json"
+                                }
+                            ],
+                            "body": "{\n  \"message\": \"<string>\"\n}",
+                            "cookie": [],
+                            "_postman_previewlanguage": "json"
+                        },
+                        {
+                            "id": "dd9236a9-ad34-453f-9def-22f5af5d4604",
+                            "name": "Rate limit exceeded.",
+                            "originalRequest": {
+                                "url": {
+                                    "path": [
+                                        "v1",
+                                        "messages",
+                                        ":messageId",
+                                        "extract"
+                                    ],
+                                    "host": [
+                                        "{{baseUrl}}"
+                                    ],
+                                    "query": [],
+                                    "variable": [
+                                        {
+                                            "disabled": false,
+                                            "description": {
+                                                "content": "(Required) Numeric message id. Messages belonging to a different inbox return `404`.",
+                                                "type": "text/plain"
+                                            },
+                                            "type": "any",
+                                            "value": "<integer>",
+                                            "key": "messageId"
+                                        }
+                                    ]
+                                },
+                                "header": [
+                                    {
+                                        "key": "Content-Type",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "key": "Accept",
+                                        "value": "application/json"
+                                    },
+                                    {
+                                        "description": {
+                                            "content": "Added as a part of security scheme: bearer",
+                                            "type": "text/plain"
+                                        },
+                                        "key": "Authorization",
+                                        "value": "Bearer <token>"
+                                    }
+                                ],
+                                "method": "POST",
+                                "body": {
+                                    "mode": "raw",
+                                    "raw": "{\n  \"extract\": {\n    \"key_0\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_1\": {\n      \"type\": \"attachment\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_2\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_3\": {\n      \"type\": \"code\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"cc\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_4\": {\n      \"type\": \"attachment\",\n      \"select\": \"last\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_5\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_6\": {\n      \"type\": \"regex\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_from\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_7\": {\n      \"type\": \"code\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"envelope_to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    },\n    \"key_8\": {\n      \"type\": \"address\",\n      \"select\": \"all\",\n      \"optional\": false,\n      \"pattern\": \"<string>\",\n      \"from\": \"<string>\",\n      \"length\": 6,\n      \"charset\": \"digits\",\n      \"near\": \"<string>\",\n      \"url\": \"<string>\",\n      \"host\": \"<string>\",\n      \"path_prefix\": \"<string>\",\n      \"query_param\": \"\",\n      \"text_contains\": \"<string>\",\n      \"matches\": \"<string>\",\n      \"field\": \"to\",\n      \"filename\": \"<string>\",\n      \"filename_contains\": \"<string>\",\n      \"content_type\": \"<string>\"\n    }\n  },\n  \"mode\": \"report\"\n}",
                                     "options": {
                                         "raw": {
                                             "headerFamily": "json",
@@ -4249,7 +4759,7 @@
             "description": "Email-client HTML compatibility scoring (caniemail-based).",
             "item": [
                 {
-                    "id": "7e4d3b7d-3bf7-4e5a-b978-7f9c5657b54a",
+                    "id": "20a9e6df-bb55-4bcb-9426-0720cc8c5882",
                     "name": "Get the HTML compatibility report",
                     "request": {
                         "name": "Get the HTML compatibility report",
@@ -4293,7 +4803,7 @@
                     },
                     "response": [
                         {
-                            "id": "3b47ff19-a7f5-4889-a023-590c1636ff05",
+                            "id": "aa621960-1bef-40df-997f-03d7893ceb2a",
                             "name": "The compatibility report.",
                             "originalRequest": {
                                 "url": {
@@ -4345,12 +4855,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n  \"status\": \"<string>\",\n  \"compatibility_ratio\": \"<float>\",\n  \"issues\": [\n    {\n      \"feature_id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"category\": \"<string>\",\n      \"severity\": \"error\",\n      \"unsupported_clients\": [\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        },\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        }\n      ]\n    },\n    {\n      \"feature_id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"category\": \"<string>\",\n      \"severity\": \"warn\",\n      \"unsupported_clients\": [\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        },\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        }\n      ]\n    }\n  ],\n  \"checked_at\": \"<dateTime>\"\n}",
+                            "body": "{\n  \"status\": \"<string>\",\n  \"compatibility_ratio\": \"<float>\",\n  \"issues\": [\n    {\n      \"feature_id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"category\": \"<string>\",\n      \"severity\": \"error\",\n      \"unsupported_clients\": [\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        },\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        }\n      ]\n    },\n    {\n      \"feature_id\": \"<string>\",\n      \"title\": \"<string>\",\n      \"category\": \"<string>\",\n      \"severity\": \"error\",\n      \"unsupported_clients\": [\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        },\n        {\n          \"client\": \"<string>\",\n          \"platform\": \"<string>\",\n          \"support\": \"<string>\",\n          \"note\": \"<string,null>\"\n        }\n      ]\n    }\n  ],\n  \"checked_at\": \"<dateTime>\"\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6a79e229-f829-4dec-aca8-84482a614629",
+                            "id": "8e54135e-b98d-41d3-93e3-aa971a543e4c",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -4407,7 +4917,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ccff0cf4-b0c3-497d-ae8a-6581fb878870",
+                            "id": "2f5e370b-4899-40d9-a3df-ba6334accbd9",
                             "name": "IP not allowed, or the caller lacks HTML Check API access.",
                             "originalRequest": {
                                 "url": {
@@ -4464,7 +4974,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f005a2e4-85ba-4987-b08f-f5afc7e12330",
+                            "id": "67e1818b-4811-407a-ab96-174cfec60d3f",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -4521,7 +5031,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "3cfb0733-8db7-48c5-b714-ebe17d0f637b",
+                            "id": "a633d66f-cb3a-417a-9081-ea0e86db56be",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -4617,7 +5127,7 @@
             "description": "Drop-in aliases for a subset of the Mailtrap sandbox API.",
             "item": [
                 {
-                    "id": "b9bfa672-4436-4caf-b851-adc21410d410",
+                    "id": "e0166159-c83e-4d49-ae12-bc7fe7212c94",
                     "name": "List messages (Mailtrap alias)",
                     "request": {
                         "name": "List messages (Mailtrap alias)",
@@ -4688,7 +5198,7 @@
                     },
                     "response": [
                         {
-                            "id": "26d26a0e-dcaa-4498-9f7e-7da83ce187be",
+                            "id": "1019da97-34d7-453b-bf11-647bcbf1bb6e",
                             "name": "Messages, newest first.",
                             "originalRequest": {
                                 "url": {
@@ -4772,7 +5282,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "553473fe-d693-4fff-90d9-7be0899221b0",
+                            "id": "f3860502-f8fc-4a5b-9f5a-d9ae5216add6",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -4856,7 +5366,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "79fa1b10-84b1-4f80-9b6e-ef68a451c8af",
+                            "id": "1668f2b0-d400-426a-9087-008c2f0714d4",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -4940,7 +5450,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d401954c-5813-49a5-aea2-e439aea90453",
+                            "id": "eb4740a6-5d1c-4b6a-8e2f-49639afad553",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -5057,7 +5567,7 @@
                     }
                 },
                 {
-                    "id": "f0f29ebf-a6b4-4992-894e-838cda72f552",
+                    "id": "bfbf1435-b90e-4b4d-89b4-00ef1dd7accd",
                     "name": "Get a message (Mailtrap alias)",
                     "request": {
                         "name": "Get a message (Mailtrap alias)",
@@ -5108,7 +5618,7 @@
                     },
                     "response": [
                         {
-                            "id": "51d00b02-e05b-4fa1-9d31-74e17a154de8",
+                            "id": "de1586bf-7c15-4941-8ceb-d1088d557be8",
                             "name": "The message.",
                             "originalRequest": {
                                 "url": {
@@ -5175,7 +5685,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4488ec4f-7f69-4f83-972c-6d7a1f7aed90",
+                            "id": "b5eae568-ba9a-49ad-bfdb-ff2d4ec51d48",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -5242,7 +5752,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "260128be-1a0f-440c-83b2-1b7f18ca421b",
+                            "id": "6bfecb47-ef3e-4b40-9a4c-4e65f73a99a3",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -5309,7 +5819,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "de5d79b2-2369-45a3-8943-3d445ccb0aa7",
+                            "id": "093f224b-99cb-4146-bcd6-d31810b3aeff",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -5376,7 +5886,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "384f6aee-c2d0-4d74-84bb-b0e7289d5ee5",
+                            "id": "5265df7f-b2bc-47a6-bd44-025420e4e133",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -5476,7 +5986,7 @@
                     }
                 },
                 {
-                    "id": "e0d2f617-77ec-4797-87ff-b50c3c2ffb3b",
+                    "id": "04a5f912-f4b0-4c9e-aed0-ec0d03604bad",
                     "name": "Update a message's read state (Mailtrap alias)",
                     "request": {
                         "name": "Update a message's read state (Mailtrap alias)",
@@ -5543,7 +6053,7 @@
                     },
                     "response": [
                         {
-                            "id": "2b2455a7-e49a-4f8b-b256-023e54e74322",
+                            "id": "1cea51ee-2e66-41f9-b09a-2d99d4de8e1e",
                             "name": "The updated message.",
                             "originalRequest": {
                                 "url": {
@@ -5623,7 +6133,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "cf0c87fd-1236-4c38-80f3-0d1d6a261786",
+                            "id": "f0567ac1-b274-4547-9eba-f54c1c5dfa21",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -5703,7 +6213,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "becb6791-fbc6-4ec0-8cf9-b0aad9bcb80b",
+                            "id": "e1d1e5d7-3a6f-4b8e-ab5a-0519917a0d48",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -5783,7 +6293,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "34172aef-7a9c-4066-8925-ee6e1257ecb8",
+                            "id": "2e46878d-b253-444e-b85a-ec8c09ef54f8",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -5863,7 +6373,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "c5e30ca4-3b6a-43a1-87e4-cc6333a40e67",
+                            "id": "7073b94c-eafe-4d8b-b2da-1a46019813cc",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -5976,7 +6486,7 @@
                     }
                 },
                 {
-                    "id": "38f9e810-7a23-423e-bc7b-96321aaff4a7",
+                    "id": "2fcd1189-d625-4208-af31-672cfad7e1ea",
                     "name": "Delete a message (Mailtrap alias)",
                     "request": {
                         "name": "Delete a message (Mailtrap alias)",
@@ -6027,7 +6537,7 @@
                     },
                     "response": [
                         {
-                            "id": "02f78268-c9c9-4084-9592-bd102c510e09",
+                            "id": "23b663d6-4341-4711-a220-c4f8b42d445e",
                             "name": "The deleted message's last representation.",
                             "originalRequest": {
                                 "url": {
@@ -6094,7 +6604,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "92887221-1b50-4f68-8d35-bdacc3f3052f",
+                            "id": "f85c095d-d598-4c9d-adab-8bf9077d87fa",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -6161,7 +6671,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "1d39ef6d-047e-468a-9248-e4fc16c6cf0f",
+                            "id": "beb4dff6-d025-4a5d-acc2-dc5433609227",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -6228,7 +6738,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "8701f0b6-87cc-41ad-921d-ec11e63199bd",
+                            "id": "54f1544d-5841-4db5-9607-55ae7952c7a4",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -6295,7 +6805,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "85a1a325-3302-4570-8122-e0b8c93f4fe2",
+                            "id": "e9a4b2ce-1e53-4620-9aea-8ea7421e1231",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -6395,7 +6905,7 @@
                     }
                 },
                 {
-                    "id": "cde02da1-6a10-4d4d-92b6-d1e95f8577ea",
+                    "id": "29a12c9a-b461-40be-8515-f18010978c3f",
                     "name": "Get the plain-text body (Mailtrap alias)",
                     "request": {
                         "name": "Get the plain-text body (Mailtrap alias)",
@@ -6447,7 +6957,7 @@
                     },
                     "response": [
                         {
-                            "id": "b8b736e6-fa02-4d43-9a76-b05c4e62b489",
+                            "id": "004e2b6e-708f-4158-b0c2-50c599f669bc",
                             "name": "The text body (empty string when the message has none).",
                             "originalRequest": {
                                 "url": {
@@ -6515,7 +7025,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "a013e403-7278-42bc-a629-3dec3d1729f7",
+                            "id": "6bad27be-f977-408f-9008-6444ef0927e7",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -6583,7 +7093,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "e87300ee-e775-4bf5-b2b2-58f7d5cc3f01",
+                            "id": "a94b3ddf-e4f8-4e46-a4f8-ea45be60ab16",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -6651,7 +7161,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "065009e6-6b80-4fb9-9cfd-4b9c21610584",
+                            "id": "5ed1bef7-3cfc-4fc0-87c9-6255de3bcb14",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -6719,7 +7229,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "83b1716d-eb7e-4788-bee4-d80b11aab32c",
+                            "id": "75aff5a3-143a-4867-a753-638c6e7ced84",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -6820,7 +7330,7 @@
                     }
                 },
                 {
-                    "id": "bce73b12-243b-44f9-897d-0e5b7634886a",
+                    "id": "46b1e507-83ae-4e29-be59-67da3ddd348b",
                     "name": "Get the rendered HTML body (Mailtrap alias)",
                     "request": {
                         "name": "Get the rendered HTML body (Mailtrap alias)",
@@ -6875,7 +7385,7 @@
                     },
                     "response": [
                         {
-                            "id": "c545f255-9d1f-44c6-90e5-01afbbc01e76",
+                            "id": "d9e8e8ba-f925-494b-b3d6-7d29daee0cb1",
                             "name": "Rendered HTML.",
                             "originalRequest": {
                                 "url": {
@@ -6943,7 +7453,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "46c0e12d-e5f7-47f5-927c-7c596e8baf79",
+                            "id": "c529c7b8-86f8-4623-a41e-576371f34cd6",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -7011,7 +7521,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "044de466-4ce0-423e-a5be-c39bcec72e3c",
+                            "id": "f412ef0a-268d-44bf-a7d6-230989a54f76",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -7079,7 +7589,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "c1b3b1ec-fc18-4540-920b-51820c537c48",
+                            "id": "55302198-bbc1-43e6-a9bd-a524605dda1e",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -7147,7 +7657,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "a07730a7-7aca-4c0b-a9ed-253e76c452c4",
+                            "id": "8f348720-6e8a-4dd3-bf8b-afb4622241cd",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -7248,7 +7758,7 @@
                     }
                 },
                 {
-                    "id": "dd1c9fc4-ce05-4e6e-9c77-7926eb3d5d34",
+                    "id": "1ec235b6-86a0-4911-b88d-f70599073fcc",
                     "name": "Get the original HTML source (Mailtrap alias)",
                     "request": {
                         "name": "Get the original HTML source (Mailtrap alias)",
@@ -7303,7 +7813,7 @@
                     },
                     "response": [
                         {
-                            "id": "57da4ff5-dd33-4c2b-ad7f-fc3f0116889a",
+                            "id": "854137e4-83f4-4b6b-b5d4-f59918a61bcd",
                             "name": "Original HTML source.",
                             "originalRequest": {
                                 "url": {
@@ -7371,7 +7881,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "d5df9eb0-0c5c-4a7e-a43f-6e28eb605f68",
+                            "id": "dfe3bff4-cfb8-4784-971e-56da9a9b8346",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -7439,7 +7949,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "632666d9-4cf3-4ae7-8e7f-6bece368a6e4",
+                            "id": "9a304b40-1778-4c6d-97fa-d38e7784a7f2",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -7507,7 +8017,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "d07b7f57-fa69-48e2-bef4-ee025dcf8ae1",
+                            "id": "9399f2a1-910e-4740-bade-caa99e0831c1",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -7575,7 +8085,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "ef206f24-3753-4c24-bd32-bd92c29144fe",
+                            "id": "6d5525de-eb40-4479-8d4b-154238dfeac6",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -7676,7 +8186,7 @@
                     }
                 },
                 {
-                    "id": "6035870b-f2d2-4f8c-8478-f2737ad319b1",
+                    "id": "5957f84e-d086-40e9-b1fc-5ca53a8877e8",
                     "name": "Get the raw RFC 822 source (Mailtrap alias)",
                     "request": {
                         "name": "Get the raw RFC 822 source (Mailtrap alias)",
@@ -7728,7 +8238,7 @@
                     },
                     "response": [
                         {
-                            "id": "c5e409fd-9569-47b7-873e-79cbc3b965bb",
+                            "id": "80f5d656-7900-4f75-9145-b61dfb7fdc8c",
                             "name": "The complete raw message source.",
                             "originalRequest": {
                                 "url": {
@@ -7796,7 +8306,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "0c68208d-644c-431d-a18e-e962b579f77b",
+                            "id": "48924214-e6bb-4f3d-bb0d-c7cd86fb01c5",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -7864,7 +8374,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "60f5545b-b48c-431b-966b-497de41a6ea8",
+                            "id": "036636fb-8a2e-4af6-892b-0b15732c9077",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -7932,7 +8442,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "600bf572-df30-4319-b866-bcc40088b01f",
+                            "id": "1bcfd036-e74d-4b78-b7cf-a931bffdcb23",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -8000,7 +8510,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "fe8a9234-e393-45db-a59b-2c6bc9b2bd03",
+                            "id": "78641abe-575e-4661-be80-80fb7b9db6e5",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -8101,7 +8611,7 @@
                     }
                 },
                 {
-                    "id": "427cef1f-10dd-4cf0-8d58-bef01703e6db",
+                    "id": "bef06a95-17bf-4f65-99e7-7fbc1c43b547",
                     "name": "Download the message as .eml (Mailtrap alias)",
                     "request": {
                         "name": "Download the message as .eml (Mailtrap alias)",
@@ -8153,7 +8663,7 @@
                     },
                     "response": [
                         {
-                            "id": "e2441308-bf73-49b0-865e-b75b3a3aa55e",
+                            "id": "5fd0d191-44fc-4ac2-8545-861e724a9bde",
                             "name": "The raw message as an attachment download.",
                             "originalRequest": {
                                 "url": {
@@ -8230,7 +8740,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "c6e7d0d9-e21b-4971-83d8-4fc24d21831b",
+                            "id": "23c22559-11f4-4571-abbe-5c56d9f640b4",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -8298,7 +8808,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "4be43cc5-286f-4cc2-8c08-bb7678b43415",
+                            "id": "f5b6d494-4c59-46b3-a932-a24b3d83f431",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -8366,7 +8876,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "58d13e45-71ff-4a05-9c3c-f52ab24e3d7b",
+                            "id": "7cfb298b-d0b8-4940-970d-bcc1a8727ca7",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -8434,7 +8944,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6442bfd7-2c86-4a0c-bfce-08eee1c4dcdf",
+                            "id": "b3e6551f-9898-45e2-9327-3f30d3d8dd73",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -8535,7 +9045,7 @@
                     }
                 },
                 {
-                    "id": "a32c5c56-0139-45a9-a08f-c811f1e761d8",
+                    "id": "539e7275-0f91-4bae-9fdb-d0b9f4aad888",
                     "name": "Get message headers (Mailtrap alias)",
                     "request": {
                         "name": "Get message headers (Mailtrap alias)",
@@ -8590,7 +9100,7 @@
                     },
                     "response": [
                         {
-                            "id": "78b9702d-c3aa-401b-9554-daf009dca178",
+                            "id": "6c8eed9c-589c-4371-bc05-62798d292ee7",
                             "name": "Header map.",
                             "originalRequest": {
                                 "url": {
@@ -8653,12 +9163,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "{\n  \"headers\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+                            "body": "{\n  \"headers\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "5bc85b76-596f-4b56-9af5-9b4853c7b821",
+                            "id": "85e00160-d891-462e-95e8-f1d8df4cdfcc",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -8726,7 +9236,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "2a137368-4f14-4935-baa5-f129a058d8a7",
+                            "id": "b182827b-df71-40e4-9ae1-262880c61aa1",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -8794,7 +9304,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "e6aa8f22-8bb6-43b4-aa58-53c9f3b74fa0",
+                            "id": "b29f7027-c384-4133-ba55-aba04e58ed7c",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -8862,7 +9372,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "431d605e-d243-4524-b87a-211c627ad49f",
+                            "id": "318dc547-aac8-47fa-8f20-7e73d9057905",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -8963,7 +9473,7 @@
                     }
                 },
                 {
-                    "id": "3bd40df9-4ad7-4f3c-af3e-a784243ca301",
+                    "id": "45849e7e-3793-4932-8b0c-d3141461b006",
                     "name": "List attachments (Mailtrap alias)",
                     "request": {
                         "name": "List attachments (Mailtrap alias)",
@@ -9015,7 +9525,7 @@
                     },
                     "response": [
                         {
-                            "id": "0aadd661-38f5-4866-830c-6d273bc09b2c",
+                            "id": "be3b522d-a7bc-44fb-b0d0-dcf0d1bcc6ee",
                             "name": "Attachment metadata.",
                             "originalRequest": {
                                 "url": {
@@ -9078,12 +9588,12 @@
                                     "value": "application/json"
                                 }
                             ],
-                            "body": "[\n  {\n    \"id\": \"<integer>\",\n    \"message_id\": \"<integer>\",\n    \"filename\": \"<string,null>\",\n    \"attachment_type\": \"attachment\",\n    \"content_type\": \"<string,null>\",\n    \"content_id\": \"<string,null>\",\n    \"transfer_encoding\": \"<null>\",\n    \"attachment_size\": \"<integer>\",\n    \"checksum\": \"<string,null>\",\n    \"created_at\": \"<string,null-date-time>\",\n    \"updated_at\": \"<string,null-date-time>\",\n    \"attachment_human_size\": \"<string>\",\n    \"download_path\": \"<uri>\"\n  },\n  {\n    \"id\": \"<integer>\",\n    \"message_id\": \"<integer>\",\n    \"filename\": \"<string,null>\",\n    \"attachment_type\": \"inline\",\n    \"content_type\": \"<string,null>\",\n    \"content_id\": \"<string,null>\",\n    \"transfer_encoding\": \"<null>\",\n    \"attachment_size\": \"<integer>\",\n    \"checksum\": \"<string,null>\",\n    \"created_at\": \"<string,null-date-time>\",\n    \"updated_at\": \"<string,null-date-time>\",\n    \"attachment_human_size\": \"<string>\",\n    \"download_path\": \"<uri>\"\n  }\n]",
+                            "body": "[\n  {\n    \"id\": \"<integer>\",\n    \"message_id\": \"<integer>\",\n    \"filename\": \"<string,null>\",\n    \"attachment_type\": \"inline\",\n    \"content_type\": \"<string,null>\",\n    \"content_id\": \"<string,null>\",\n    \"transfer_encoding\": \"<null>\",\n    \"attachment_size\": \"<integer>\",\n    \"checksum\": \"<string,null>\",\n    \"created_at\": \"<string,null-date-time>\",\n    \"updated_at\": \"<string,null-date-time>\",\n    \"attachment_human_size\": \"<string>\",\n    \"download_path\": \"<uri>\"\n  },\n  {\n    \"id\": \"<integer>\",\n    \"message_id\": \"<integer>\",\n    \"filename\": \"<string,null>\",\n    \"attachment_type\": \"attachment\",\n    \"content_type\": \"<string,null>\",\n    \"content_id\": \"<string,null>\",\n    \"transfer_encoding\": \"<null>\",\n    \"attachment_size\": \"<integer>\",\n    \"checksum\": \"<string,null>\",\n    \"created_at\": \"<string,null-date-time>\",\n    \"updated_at\": \"<string,null-date-time>\",\n    \"attachment_human_size\": \"<string>\",\n    \"download_path\": \"<uri>\"\n  }\n]",
                             "cookie": [],
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "540492f9-41aa-47a3-a3e4-4223256d2921",
+                            "id": "47534e31-84ad-43cb-b959-1cb0014a02bb",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -9151,7 +9661,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "f67980b7-3d1a-420a-964b-80cd02c55cf2",
+                            "id": "6f4a9e7e-09a6-4fba-8d32-5116a251dd00",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -9219,7 +9729,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "42728d58-8dae-4a34-92ec-465bd73e0e8f",
+                            "id": "9d87142d-e41f-4761-8e25-100a18a81ab8",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -9287,7 +9797,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "965a9f23-6de5-4218-8f5b-f120cfa07209",
+                            "id": "01f9df73-42c8-4f68-a31d-fddb265c2d49",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -9388,7 +9898,7 @@
                     }
                 },
                 {
-                    "id": "087705b1-a2d0-48a0-b5f3-e46875b21103",
+                    "id": "3475c8f1-9555-4a9a-8406-0ba92c7d4b70",
                     "name": "Get attachment metadata (Mailtrap alias)",
                     "request": {
                         "name": "Get attachment metadata (Mailtrap alias)",
@@ -9451,7 +9961,7 @@
                     },
                     "response": [
                         {
-                            "id": "113dcad5-f2a2-4188-95cd-6c83d043057e",
+                            "id": "d9d51785-6569-4859-8737-08e622471c4c",
                             "name": "Attachment metadata.",
                             "originalRequest": {
                                 "url": {
@@ -9530,7 +10040,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "c5ae416c-56f8-4818-bf97-a877be8b8861",
+                            "id": "f3423599-8d55-43f2-be49-7f0572d9bc37",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -9609,7 +10119,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "778f94df-bbd4-436a-a4d7-3b4ccfa29eb6",
+                            "id": "290ef053-99ac-41e8-b766-8e0cee6d0f64",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -9688,7 +10198,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "5ef23e40-3453-4ffb-8750-a309383421ec",
+                            "id": "0493f29c-662c-4a23-9b68-4599ff849545",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -9767,7 +10277,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "89a58c76-39a4-46e2-ae76-784b9cf332ca",
+                            "id": "7c092577-9a7b-4f85-ac99-f596f12d6bb3",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -9879,7 +10389,7 @@
                     }
                 },
                 {
-                    "id": "20830aa8-8ec5-4e8e-b715-a768220d5a7d",
+                    "id": "bd11e8d3-ca99-4232-aecd-e311aa3e20f6",
                     "name": "Download an attachment (Mailtrap alias)",
                     "request": {
                         "name": "Download an attachment (Mailtrap alias)",
@@ -9943,7 +10453,7 @@
                     },
                     "response": [
                         {
-                            "id": "e2e2eb51-0f22-4af0-a809-32f923b3a53d",
+                            "id": "759b6b8e-cd68-4e92-a849-04827dc65b9c",
                             "name": "The attachment content, as a download.",
                             "originalRequest": {
                                 "url": {
@@ -10032,7 +10542,7 @@
                             "_postman_previewlanguage": "text"
                         },
                         {
-                            "id": "68410312-443e-490f-b5d1-82b7bd1d817d",
+                            "id": "26e00bc9-1ccf-45dc-be30-58761d35d868",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -10112,7 +10622,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "0ac49557-6282-48ff-a622-4637d3a71002",
+                            "id": "8abf5d1b-9d65-4a95-9d68-9f4c84b45124",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -10192,7 +10702,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "6da8ddb7-aedc-465c-b388-094567781e61",
+                            "id": "6f6f4d14-b5cc-4c72-9ad4-97eaafe5e342",
                             "name": "No such resource in this inbox (includes resources owned by other inboxes).",
                             "originalRequest": {
                                 "url": {
@@ -10272,7 +10782,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "9bf68557-ce72-49f2-b0b4-27a605e19288",
+                            "id": "27fa5dd5-9304-41ce-8e27-881a133c0d79",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -10385,7 +10895,7 @@
                     }
                 },
                 {
-                    "id": "968ec7bc-94c4-4d25-8fde-d1f1370772f2",
+                    "id": "b6957a08-42a3-4d1e-b102-2bfe1c3a5a2b",
                     "name": "Delete all messages (Mailtrap alias)",
                     "request": {
                         "name": "Delete all messages (Mailtrap alias)",
@@ -10425,7 +10935,7 @@
                     },
                     "response": [
                         {
-                            "id": "0690afc5-0934-4eb8-9363-35f0f554b371",
+                            "id": "855e43ee-f26e-40e9-b3ce-5e9c36b97362",
                             "name": "The emptied sandbox.",
                             "originalRequest": {
                                 "url": {
@@ -10481,7 +10991,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "46166dff-cc7c-48c7-bb32-bfcdb047be17",
+                            "id": "214e3cd1-1a63-46a5-abde-1727990ed02d",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -10537,7 +11047,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "32907ea6-c74d-41e1-a307-f8f02c29ff8d",
+                            "id": "35e01310-0cba-46d8-bf14-987955ca57e6",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -10593,7 +11103,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "419b089a-38d7-4bb1-9ff6-bd2bdd500f95",
+                            "id": "446babe7-a801-43e7-994d-804a6d573fa9",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -10682,7 +11192,7 @@
                     }
                 },
                 {
-                    "id": "e173b921-1c5a-48e6-96de-44f9f7275655",
+                    "id": "8f7af82c-6234-4c7c-b4e8-bcf03970d834",
                     "name": "Mark all messages read (Mailtrap alias)",
                     "request": {
                         "name": "Mark all messages read (Mailtrap alias)",
@@ -10722,7 +11232,7 @@
                     },
                     "response": [
                         {
-                            "id": "3e75bd34-74de-40cc-a85f-828af9ff3ef8",
+                            "id": "fb027e4e-8a58-41d7-b123-39e80effc458",
                             "name": "The sandbox with updated unread count.",
                             "originalRequest": {
                                 "url": {
@@ -10778,7 +11288,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "7a05eeab-b771-4904-9cb7-86e183efc751",
+                            "id": "33c96c2f-df73-47c9-a66a-6e71938645d8",
                             "name": "Missing or invalid API token.",
                             "originalRequest": {
                                 "url": {
@@ -10834,7 +11344,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "c9cfe86a-d491-49ad-a2a2-af64ffcd2272",
+                            "id": "fb2ebb21-edfd-40a5-8f0f-10b57b18d3de",
                             "name": "The caller's IP address is outside the inbox's allow-list.",
                             "originalRequest": {
                                 "url": {
@@ -10890,7 +11400,7 @@
                             "_postman_previewlanguage": "json"
                         },
                         {
-                            "id": "baf8e8d3-5e8a-4394-a772-227259814fc4",
+                            "id": "3bcc8c27-d042-4e77-a854-c40a59e57dc9",
                             "name": "Rate limit exceeded.",
                             "originalRequest": {
                                 "url": {
@@ -10999,7 +11509,7 @@
         }
     ],
     "info": {
-        "_postman_id": "0bf53f5b-d99c-48e3-a2b4-0761b7f2d858",
+        "_postman_id": "a64d5f8d-2891-4e18-bb61-adc932581623",
         "name": "Sendtrap API",
         "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
         "description": {

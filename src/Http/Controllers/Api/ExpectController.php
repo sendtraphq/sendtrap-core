@@ -17,10 +17,11 @@ use Sendtrap\Core\Http\Resources\MessageResource;
 /**
  * POST /api/v1/expect — one deterministic request that waits for mail,
  * evaluates expressive match conditions, applies post-match assertions,
- * and returns a machine-readable diagnostic that distinguishes "no mail
- * arrived" from "mail arrived but was wrong" (Plan 02). /assert stays
- * unchanged for compatibility; this is the endpoint test suites should
- * reach for.
+ * optionally extracts named values (verification codes, links, addresses,
+ * attachments — Plan 05) atomically with the match, and returns a
+ * machine-readable diagnostic that distinguishes "no mail arrived" from
+ * "mail arrived but was wrong" (Plan 02). /assert stays unchanged for
+ * compatibility; this is the endpoint test suites should reach for.
  *
  * Report mode (default) always answers 200. Strict mode answers 422 on an
  * unmet expectation with the same diagnostic body, so a plain HTTP-error
@@ -79,6 +80,7 @@ class ExpectController extends Controller
             'messages' => MessageResource::collection($outcome->matched->take(10))->resolve(),
             'conditions' => $outcome->conditionDiagnostics(),
             'assertions_failed_on' => $outcome->assertionsFailedOn,
+            'extract' => $outcome->extractDiagnostics(),
             'request_id' => $requestId,
         ];
 

@@ -8,6 +8,7 @@ use Sendtrap\Core\Http\Resources\MessageResource;
 use Sendtrap\Core\Models\Attachment;
 use Sendtrap\Core\Models\Inbox;
 use Sendtrap\Core\Models\Message;
+use Sendtrap\Core\Storage\MessageDeleter;
 use Sendtrap\Core\Support\MessageStorage;
 use Sendtrap\Core\Support\SpamCheck;
 use Symfony\Component\HttpFoundation\Response;
@@ -157,7 +158,7 @@ class MessageController extends Controller
     {
         $this->authorize('delete', $message);
 
-        $message->delete();
+        app(MessageDeleter::class)->delete($message);
 
         return back();
     }

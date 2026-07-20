@@ -84,6 +84,13 @@ class ShareInertiaRenderTest extends PackageTestCase
         $this->get(route('share.inbox.message', [$inboxShare->token, $message->id]))
             ->assertOk()
             ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
+
+        // Error responses must answer noindex too: a bad-token 404 aborts
+        // inside the controller, and that exception must not unwind past
+        // the middleware and get rendered headerless.
+        $this->get(route('share.show', 'not-a-real-token'))
+            ->assertNotFound()
+            ->assertHeader('X-Robots-Tag', 'noindex, nofollow');
     }
 
     public function test_share_show_renders_the_inertia_message_page(): void
